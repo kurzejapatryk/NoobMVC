@@ -1,0 +1,21 @@
+{
+    "name": "kurzejapatryk/sphereframework",
+    "description": "Bardzo prosty framework PHP do bardzo prostych zadań",
+    "keywords": ["php","framework","sphereframework"],
+    "homepage": "https://spheresystems.pl",
+    "version": "1.0.0",
+    "license": "MIT",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Patryk Kurzeja`",
+            "homepage": "https://spheresystems.pl",
+            "role": "Author",
+            "email": "p.kurzeja@spheresystems.pl"
+        }
+    ],
+    "require": {
+        "php": ">=5.5.24",
+        "smarty/smarty": "^3.1"
+    }
+}
