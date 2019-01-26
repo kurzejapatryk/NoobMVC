@@ -57,10 +57,10 @@ Ustawienia aplikacji znajdują się w katalogu Configs. Każdy z plikow odpowada
 5. System.php - Ustawienia dotyczące adresu aplikacji, wersji oraz sciezek dostepowych do niektorych katalogow.
 
 # Kontrolery
-Kontrolery zawieraja definicje metod, ktore sa uruchomiane na danej podstronie. Działa to w prosty sposob, po uruchomieniu skryptu /index.php zostaje wywołana metoda "start()" z dymyślnego kontrolera (plik /Configs/Init.php) lub kontroler zostaje wskazany poprzez parametr 'page' przegazany metodą GET (przez pasek adresu, np. twojastrona.pl/?page=kontroler lub twojastrona.pl/Kontroler). Aby wywołac inną metodę niż metoda 'start()', należy użyc drugiego parametru GET o nazwie 'action' (twojastrona.pl/?page=Kontroler&action=wybranaMetoda lub twojastrona.pl/Kontroler/metoda). Ważne jest aby nazwy klas były takie same jak nazwy pliku z dodaniem .class.php oraz zdefiniowanie przestrzeni nazw Controllers (namespace Controllers; na poczatku pliku).
+Kontrolery zawieraja definicje metod, ktore sa uruchomiane na danej podstronie. Działa to w prosty sposob, po uruchomieniu skryptu /index.php zostaje wywołana metoda `start()` z dymyślnego kontrolera (plik `/Configs/Init.php`) lub kontroler zostaje wskazany poprzez parametr `page` przegazany metodą GET (przez pasek adresu, np. `twojastrona.pl/?page=kontroler` lub `twojastrona.pl/Kontroler`). Aby wywołac inną metodę niż metoda `start()`, należy użyc drugiego parametru GET o nazwie `action` (`twojastrona.pl/?page=Kontroler&action=wybranaMetoda` lub `twojastrona.pl/Kontroler/metoda`). Ważne jest aby nazwy klas były takie same jak nazwy pliku z dodaniem `.class.php` oraz zdefiniowanie przestrzeni nazw Controllers (`namespace Controllers;` na poczatku pliku).
 
 # Modele
-Aby ułatwic pracę z bazą danych framework wykorzystuje modele. Model zawiera odzwierciedlenie stuktury tabeli w bazie danych. Nazwy klasy modelu musi byc taka sama jak nazwa pliku oraz znajodwac się w przestrzeni nazw Models (namespace Models;), Bardzo ważne są pola 'id' oraz 'table'. Pole id powinno by publiczne (public $id;) a table prywatnym statycznym polem (private staic $table = 'nazwa_tabeli'). Klasy będące modelm powinny byc rozszerzeniem klasy Core\\Models.
+Aby ułatwic pracę z bazą danych framework wykorzystuje modele. Model zawiera odzwierciedlenie stuktury tabeli w bazie danych. Nazwy klasy modelu musi byc taka sama jak nazwa pliku oraz znajodwac się w przestrzeni nazw Models (`namespace Models;`), Bardzo ważne są pola `id` oraz `table`. Pole id powinno by publiczne (`public $id;`) a table prywatnym statycznym polem (`private staic $table = 'nazwa_tabeli'`). Klasy będące modelm powinny byc rozszerzeniem klasy `Core\\Models`.
 Przykład modelu tabeli użytkownikow:
 ```
 <?php
@@ -88,7 +88,7 @@ use Models\\User;
 $User = new User($id);
 // ...
 ```
-Lub możemy użyc metody .get():
+Lub możemy użyc metody `.get()`:
 ```
 // ...
 use Models\\User;
@@ -98,7 +98,7 @@ $User->id = $id;
 $User->get();
 // ...
 ```
-Aby utworzyc nowy rekord uzyjemy metody .save() dla obiektu w ktrym pole id jest rowne NULL lub 0 (domyślnie nowy objekt posiada tak zdefiniowane pole ID):
+Aby utworzyc nowy rekord uzyjemy metody `.save()` dla obiektu w ktrym pole id jest rowne `NULL` lub `0` (domyślnie nowy objekt posiada tak zdefiniowane pole ID):
 ```
 // ...
 use Models\\User;
@@ -122,7 +122,7 @@ $User->save();
 // ...
 ```
 W ten sposb zmienione zostało tylko imie użytkownika w juz ustniejacym rekordzie.
-Dla usuwania rekordow uzywame metody .del()
+Dla usuwania rekordow uzywame metody `.del()`
 ```
 // ...
 use Models\\User;
@@ -132,7 +132,7 @@ $User->del();
 // ...
 ```
 
-Istnieje także motedo pozwalająca wyszukac pojedynczy rekord. Jest to metoda .search(). Wykorzystuje ona pale zawierające wartosc. Jeśli jednak więcej rekordw spełnia podane kryteria zostanie zwrocny tylko jeden!
+Istnieje także motedo pozwalająca wyszukac pojedynczy rekord. Jest to metoda `.search()`. Wykorzystuje ona pale zawierające wartosc. Jeśli jednak więcej rekordw spełnia podane kryteria zostanie zwrocny tylko jeden!
 ```
 // ...
 use Models\\User;
@@ -175,7 +175,7 @@ Model możemy rozszezyc o własne metody:
     }
   }
 ```
-Sam model posiada dodatkowe statyczną metodą getAll($where = array()), ktra zwraca listę wszystkich obiektow z bazy danych lub tylko wybranych po przekazaniu w argumencie tablicy kryteriow.
+Sam model posiada dodatkowe statyczną metodą `getAll($where = array())`, ktra zwraca listę wszystkich obiektow z bazy danych lub tylko wybranych po przekazaniu w argumencie tablicy kryteriow.
 ```
 // ...
 use Models\\User;
