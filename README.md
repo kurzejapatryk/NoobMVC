@@ -8,6 +8,11 @@ Prosty Framework dla podstawowych aplikacji oraz początkujących programistow.
 * [Kontrolery](#kontrolery)
 * [Modele](#modele)
 * [Klasa Response oraz system szablonow](#Klasa-Response-oraz-system-szablonow)
+* [Obsługa tablic](#Obsługa-tablic)
+* [Debugowanie](#Debugowanie)
+* [Walidacja danych](#Walidacja-danych)
+* [Pluginy](#Pluginy)
+* [Dodatkowa inforacja](#Dodatkowa-inforacja)
 
 ## Technologie
 * PHP: >= 5.5.24
@@ -241,7 +246,7 @@ class Home{
 ## Obsługa tablic
 Postawiłem na bardzo prostą obsługę tablic. Klasa `Core\Tables` zawiera trzy metody `GET()`, `POST()` oraz `COOKIES()`. Ich użycie jest naprawdę proste, jako argument podajemy nazwę pola w tablicy GET, POST czy COOKIES. Wewnątrz metod znjduje się sprawdzenie czy podane pole w danej tablicy istnije jeśli nie otrzymamy wrtośc `false` zamiast komunikatu o błędzie.
 
-## Debugging
+## Debugowanie
 W pliku konfiguracyjnym `Configs/Debuging` mamy możliwośc właczenia lub wyłaczenia informaowania o błędach. Mozemy także włączy debugowanie zapytań SQL. Po włączeniu tej opcji listę zapytań wraz z opisem błędow mamy dostępną w zmiennej globalnej `$SQL_DEBUG_ARRAY`. Klasa `Core\Debuging` posiada metodą zwracjącą listę zapyatń oraz blędow postaci kodu HTML, dzięki czemu możemy bardzo łatwo wyświetli sobie błędy w widoku smarty wstawiając przed znacznikiem `</body>` ten fragment kodu `{$SQL_DEBUG_HTML|unescape:'html'}`.
 
 ## Walidacja danych
