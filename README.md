@@ -75,22 +75,22 @@ Kontrolery zawieraja definicje metod, ktore sa uruchomiane na danej podstronie. 
 Aby ułatwic pracę z bazą danych framework wykorzystuje modele. Model zawiera odzwierciedlenie stuktury tabeli w bazie danych. Nazwy klasy modelu musi byc taka sama jak nazwa pliku oraz znajodwac się w przestrzeni nazw Models (`namespace Models;`), Bardzo ważne są pola `id` oraz `table`. Pole id powinno by publiczne (`public $id;`) a table prywatnym statycznym polem (`private staic $table = 'nazwa_tabeli'`). Klasy będące modelm powinny byc rozszerzeniem klasy `Core\\Models`.
 Przykład modelu tabeli użytkownikow:
 ```php
-<?php
-  namespace Models;
-  use Core\Model;
+namespace Models;
+
+use Core\Model;
 
 
-  class User extends Model{
+class User extends Model{
 
-    public $id;
-    public $table = 'users';
+  public $id;
+  public $table = 'users';
 
-    public $user_name;
-    public $name;
-    public $surname;
-    public $password;
-    public $email;
-  }
+  public $user_name;
+  public $name;
+  public $surname;
+  public $password;
+  public $email;
+}
 ```
 
 ### Konstruktor oraz .get()
@@ -98,7 +98,7 @@ Aby pobrac uzytkownika z bazy danych wystarczy teraz utworzyc nowy objekt i poda
 
 ```php
 // ...
-use Models\\User;
+use Models\User;
 // ...
 $User = new User($id);
 // ...
@@ -106,7 +106,7 @@ $User = new User($id);
 Lub możemy użyc metody `.get()`:
 ```php
 // ...
-use Models\\User;
+use Models\User;
 // ...
 $User = new User();
 $User->id = $id;
@@ -118,7 +118,7 @@ $User->get();
 Aby utworzyc nowy rekord uzyjemy metody `.save()` dla obiektu w ktrym pole id jest rowne `NULL` lub `0` (domyślnie nowy objekt posiada tak zdefiniowane pole ID):
 ```php
 // ...
-use Models\\User;
+use Models\User;
 // ...
 $User = new User();
 $User->name = "Jan";
@@ -132,7 +132,7 @@ $User->save();
 Podobnie wygląda aktualizacja rekordu z tą roznicą, że zostatnie zaaktualizowany rekord o zdefinioiwanym id:
 ```php
 // ...
-use Models\\User;
+use Models\User;
 // ...
 $User = new User($id);
 $User->name = "Piotr";
@@ -144,7 +144,7 @@ W ten sposb zmienione zostało tylko imie użytkownika w juz ustniejacym rekordz
 Dla usuwania rekordow uzywame metody `.del()`
 ```php
 // ...
-use Models\\User;
+use Models\User;
 // ...
 $User = new User($id);
 $User->del();
@@ -165,35 +165,34 @@ $User->search();
 ### Własne metody
 Model możemy rozszezyc o własne metody:
 ```php
-<?php
-  namespace Models;
-  use Core\Model;
-  use Core\Db;
+namespace Models;
+use Core\Model;
+use Core\Db;
 
-  class User extends Model{
+class User extends Model{
 
-    public $id;
-    public $table = 'users';
+  public $id;
+  public $table = 'users';
 
-    public $user_name;
-    public $name;
-    public $surname;
-    public $password;
-    public $email;
+  public $user_name;
+  public $name;
+  public $surname;
+  public $password;
+  public $email;
 
 
-    public function getByUserName($user_name){
-      $table = $this->table;
-      if($user_name){
-        $SQL = "SELECT * FROM ".$table." WHERE user_name = ? LIMIT 1";
-        $params = Db::select($SQL, array($user_name), true);
-        foreach($params as $key => $val){
-          $this->{$key} = $val;
-        }
+  public function getByUserName($user_name){
+    $table = $this->table;
+    if($user_name){
+      $SQL = "SELECT * FROM ".$table." WHERE user_name = ? LIMIT 1";
+      $params = Db::select($SQL, array($user_name), true);
+      foreach($params as $key => $val){
+        $this->{$key} = $val;
       }
-      return $this;
     }
+    return $this;
   }
+}
 ```
 ### ::getAll()
 Sam model posiada dodatkowe statyczną metodą `getAll($where = array())`, ktra zwraca listę wszystkich obiektow z bazy danych lub tylko wybranych po przekazaniu w argumencie tablicy kryteriow.
@@ -206,36 +205,71 @@ $Kowalscy - Users::getAll(array('surname' => "Kowalski"));
 // ...
 ```
 ## Klasa Response oraz system szablonow
-Skrypt korzysta z biblioteki SMARTY do kompilacji szablonow. Pliki szablonow znajdują się w katalogu `Views\`. Cache biblioteki znajduje się w katalogu `tmp\` do ktorego scieżka jest ustalona w pliku `Configs\System.php`.
+Skrypt korzysta z biblioteki SMARTY do kompilacji szablonow. Pliki szablonow znajdują się w katalogu `Views`. Cache biblioteki znajduje się w katalogu `tmp\` do ktorego scieżka jest ustalona w pliku `Configs\System.php`.
 
 Więcej na temat korzystania z biblioteki SMARTY znajdziesz:
 1. [Wiki](https://pl.wikibooks.org/wiki/PHP/Smarty)
 2. [Oficjalna dokumentacja](https://www.smarty.net/documentation)
 
-Klasa `Core\\Response` pozwala na szybkie wyświetalnie odpowiednich szablonow lub zwracac dane w postaci JSON.
+Klasa `Core\Response` pozwala na szybkie wyświetalnie odpowiednich szablonow lub zwracac dane w postaci JSON.
 Aby przypisac dane do widoku należu użyc metody `.assign($nazwa, $wartosc)`, tak przekazane dane będą dostępne w szablonie lub zostaną zwrocne w formacie JSON. Wyświetlanie szablonu następuje po wywołaniu metody `.displayPage('nazwa_szablonu.tpl')`. Dane w formacie JSON możemy zwrcic poprzez metode `.getJSON()`.
 
 ```php
-</php
-  namespace Controllers;
+namespace Controllers;
 
-  use Core\Response;
+use Core\Response;
 
-  class Home{
+class Home{
 
-    // Metoda wyświatlająca strone
-    public static function start(){
-      $resp = new Response();
-      $resp->assign('lang', LANG);
-      $resp->displayPage('Hello.tpl');
-    }
-
-    //metoda wyświetlajaca dane w formacie json
-    public static function getHello(){
-      $resp = new Response();
-      $resp->assign('hello', 'Hello World !');
-      $resp->getJSON();
-    }
-
+  // Metoda wyświatlająca strone
+  public static function start(){
+    $resp = new Response();
+    $resp->assign('lang', LANG);
+    $resp->displayPage('Hello.tpl');
   }
+
+  //metoda wyświetlajaca dane w formacie json
+  public static function getHello(){
+    $resp = new Response();
+    $resp->assign('hello', 'Hello World !');
+    $resp->getJSON();
+  }
+
+}
 ```
+
+## Obsługa tablic
+Postawiłem na bardzo prostą obsługę tablic. Klasa `Core\Tables` zawiera trzy metody `GET()`, `POST()` oraz `COOKIES()`. Ich użycie jest naprawdę proste, jako argument podajemy nazwę pola w tablicy GET, POST czy COOKIES. Wewnątrz metod znjduje się sprawdzenie czy podane pole w danej tablicy istnije jeśli nie otrzymamy wrtośc `false` zamiast komunikatu o błędzie.
+
+## Debugging
+W pliku konfiguracyjnym `Configs/Debuging` mamy możliwośc właczenia lub wyłaczenia informaowania o błędach. Mozemy także włączy debugowanie zapytań SQL. Po włączeniu tej opcji listę zapytań wraz z opisem błędow mamy dostępną w zmiennej globalnej `$SQL_DEBUG_ARRAY`. Klasa `Core\Debuging` posiada metodą zwracjącą listę zapyatń oraz blędow postaci kodu HTML, dzięki czemu możemy bardzo łatwo wyświetli sobie błędy w widoku smarty wstawiając przed znacznikiem `</body>` ten fragment kodu `{$SQL_DEBUG_HTML|unescape:'html'}`.
+
+## Walidacja danych
+Do walidacji danych otrzymanych na przykład z formularza na stronie zostałą stworzona klasa `Core/Validation` autorstwa [davidecesarano](https://github.com/davidecesarano).
+### Przykład użycia
+```php
+use Core\Validation;
+// ...
+$email = 'example@email.com';
+$username = 'admin';
+$password = 'test';
+$age = 29;
+
+$val = new Validation();
+$val->name('email')->value($email)->pattern('email')->required();
+$val->name('username')->value($username)->pattern('alpha')->required();
+$val->name('password')->value($password)->customPattern('[A-Za-z0-9-.;_!#@]{5,15}')->required();
+$val->name('age')->value($age)->min(18)->max(40);
+
+if($val->isSuccess()){
+  echo "Validation ok!";
+}else{
+  echo "Validation error!";
+    var_dump($val->getErrors());
+}
+  ```
+Pełna dumentacja znajduje się tutaj: [davidecesarano/Validation](https://github.com/davidecesarano/Validation). W funkcji została jedynie zmieniona walidacja adresu email, ponieważ ta w oryginalnym kodzie działała nie poprawnie.
+## Pluginy
+Framework obsługi pluginy. Pluginy nalyży umiszczac w katalogu `/Plugins`. Dostępne pluginy znajdują się na [moim Githubie](https://github,com/kurzejapatryk)
+## Dodatkowa inforacja
+Dokumentacja jest w wersji beta. W najbliższym czasie zostanie ulepszona i poprawiona pod kątem błędow.
