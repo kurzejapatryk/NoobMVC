@@ -1,24 +1,24 @@
 # SphereFramework
-Prosty Framework dla podstawowych aplikacji oraz początkujących programistow.
+Prosty Framework dla podstawowych aplikacji oraz początkujących programistów.
 
 ## Spis treści
 * [Technologie](#technologie)
-* [Struktura plikow](#struktura-plikow)
+* [Struktura plików](#struktura-plików)
 * [Konfiguracja](#konfiguracja)
 * [Kontrolery](#kontrolery)
 * [Modele](#modele)
-* [Klasa Response oraz system szablonow](#Klasa-Response-oraz-system-szablonow)
+* [Klasa Response oraz system szablonów](#Klasa-Response-oraz-system-szablonów)
 * [Obsługa tablic](#Obsługa-tablic)
 * [Debugowanie](#Debugowanie)
 * [Walidacja danych](#Walidacja-danych)
 * [Pluginy](#Pluginy)
-* [Dodatkowa inforacja](#Dodatkowa-inforacja)
+* [Dodatkowa informacja](#Dodatkowa-inforacja)
 
 ## Technologie
 * PHP: >= 5.5.24
 * SMARTY: ^3.1
 
-## Struktura plikow
+## Struktura plików
 ```
 - /
   - Configs/
@@ -66,19 +66,19 @@ Prosty Framework dla podstawowych aplikacji oraz początkujących programistow.
 ```
 
 ## Pliki konfiguracyjne
-Ustawienia aplikacji znajdują się w katalogu Configs. Każdy z plikow odpowada za inny element aplikacji.
+Ustawienia aplikacji znajdują się w katalogu Configs. Każdy z plików odpowiada za inny element aplikacji.
 1. Database.php - Ustawienia połączenia z bazą danych.
-2. Debuging.php - Ustawienia debugowania plikacji.
-3. Init.php - Tutaj znajduje się zapis dotyczący kontrolera domyślnego dla aplikacji.
-4. Locale.php - Ustawienia dotyczące języka oraz zapisu daty oraz czasu.
-5. System.php - Ustawienia dotyczące adresu aplikacji, wersji oraz sciezek dostepowych do niektorych katalogow.
+2. Debuging.php - Ustawienia debugowania aplikacji.
+3. Init.php - Tutaj znajduje się zapis dotyczący domyślnego kontrolera dla aplikacji.
+4. Locale.php - Ustawienia dotyczące języka, zapisu daty oraz czasu.
+5. System.php - Ustawienia dotyczące adresu aplikacji, wersji oraz ścieżek dostępowych.
 
 ## Kontrolery
-Kontrolery zawieraja definicje metod, ktore sa uruchomiane na danej podstronie. Działa to w prosty sposob, po uruchomieniu skryptu /index.php zostaje wywołana metoda `start()` z dymyślnego kontrolera (plik `/Configs/Init.php`) lub kontroler zostaje wskazany poprzez parametr `page` przegazany metodą GET (przez pasek adresu, np. `twojastrona.pl/?page=kontroler` lub `twojastrona.pl/Kontroler`). Aby wywołac inną metodę niż metoda `start()`, należy użyc drugiego parametru GET o nazwie `action` (`twojastrona.pl/?page=Kontroler&action=wybranaMetoda` lub `twojastrona.pl/Kontroler/metoda`). Ważne jest aby nazwy klas były takie same jak nazwy pliku z dodaniem `.class.php` oraz zdefiniowanie przestrzeni nazw Controllers (`namespace Controllers;` na poczatku pliku).
+Kontrolery zawierają definicje metod, które są uruchomiane po wywołaniu danej podstrony. Działa to w prosty sposób, po uruchomieniu skryptu /index.php zostaje wywołana metoda `start()` z domyślnego kontrolera (plik `/Configs/Init.php`) lub kontroler zostaje wskazany poprzez parametr `page` przekazany metodą GET (przez pasek adresu, np. `twojastrona.pl/?page=kontroler` lub `twojastrona.pl/Kontroler`). Aby wywołać inną metodę niż metoda `start()`, należy użyć drugiego parametru GET o nazwie `action` (`twojastrona.pl/?page=Kontroler&action=wybranaMetoda` lub `twojastrona.pl/Kontroler/metoda`). Ważne jest, aby nazwy klas były takie same jak nazwy pliku z dodaniem `.class.php` oraz zdefiniowanie przestrzeni nazw Controllers (`namespace Controllers;` na początku pliku).
 
 ## Modele
-Aby ułatwic pracę z bazą danych framework wykorzystuje modele. Model zawiera odzwierciedlenie stuktury tabeli w bazie danych. Nazwy klasy modelu musi byc taka sama jak nazwa pliku oraz znajodwac się w przestrzeni nazw Models (`namespace Models;`), Bardzo ważne są pola `id` oraz `table`. Pole id powinno by publiczne (`public $id;`) a table prywatnym statycznym polem (`private staic $table = 'nazwa_tabeli'`). Klasy będące modelm powinny byc rozszerzeniem klasy `Core\\Models`.
-Przykład modelu tabeli użytkownikow:
+Aby ułatwić pracę z bazą danych framework wykorzystuje modele. Model zawiera odzwierciedlenie struktury tabeli w bazie danych. Nazwy klasy modelu musi być taka sama jak nazwa pliku oraz znajdować się w przestrzeni nazw Models (`namespace Models;`). Bardzo ważne są pola `id` oraz `table`. Pole id powinno by publiczne (`public $id;`), a `table` prywatnym statycznym polem (`private static $table = 'nazwa_tabeli'`). Klasy będące modelem powinny być rozszerzeniem klasy `Core\Models`.
+Przykład modelu tabeli:
 ```php
 namespace Models;
 
@@ -88,7 +88,7 @@ use Core\Model;
 class User extends Model{
 
   public $id;
-  public $table = 'users';
+  private static $table = 'users';
 
   public $user_name;
   public $name;
@@ -99,7 +99,7 @@ class User extends Model{
 ```
 
 ### Konstruktor oraz .get()
-Aby pobrac uzytkownika z bazy danych wystarczy teraz utworzyc nowy objekt i podac id uzytkownika jako argument metody konstruktora:
+Aby pobrać użytkownika z bazy danych wystarczy teraz utworzyć nowy obiekt i podać id użytkownika jako argument metody konstruktora:
 
 ```php
 // ...
@@ -108,7 +108,7 @@ use Models\User;
 $User = new User($id);
 // ...
 ```
-Lub możemy użyc metody `.get()`:
+Lub możemy użyć metody `.get()`:
 ```php
 // ...
 use Models\User;
@@ -120,7 +120,7 @@ $User->get();
 ```
 ### .save()
 #### Nowy rekord
-Aby utworzyc nowy rekord uzyjemy metody `.save()` dla obiektu w ktrym pole id jest rowne `NULL` lub `0` (domyślnie nowy objekt posiada tak zdefiniowane pole ID):
+Aby utworzyć nowy rekord użyjemy metody `.save()` dla obiektu, w którym pole id jest równe `NULL` lub `0` (domyślnie nowy obiekt posiada pole `ID = NULL`):
 ```php
 // ...
 use Models\User;
@@ -134,7 +134,7 @@ $User->save();
 // ...
 ```
 #### Aktualizacja rekordu
-Podobnie wygląda aktualizacja rekordu z tą roznicą, że zostatnie zaaktualizowany rekord o zdefinioiwanym id:
+Podobnie wygląda aktualizacja rekordu z tą różnicą, że zostanie zaktualizowany rekord o zdefiniowanym id:
 ```php
 // ...
 use Models\User;
@@ -144,9 +144,9 @@ $User->name = "Piotr";
 $User->save();
 // ...
 ```
-W ten sposb zmienione zostało tylko imie użytkownika w juz ustniejacym rekordzie.
+W ten sposób zmienione zostało tylko imię użytkownika w już istniejącym rekordzie.
 ### .del()
-Dla usuwania rekordow uzywame metody `.del()`
+Dla usuwania rekordów używamy metody `.del()`
 ```php
 // ...
 use Models\User;
@@ -156,7 +156,7 @@ $User->del();
 // ...
 ```
 ### .search()
-Istnieje także motedo pozwalająca wyszukac pojedynczy rekord. Jest to metoda `.search()`. Wykorzystuje ona pale zawierające wartosc. Jeśli jednak więcej rekordw spełnia podane kryteria zostanie zwrocny tylko jeden!
+Istnieje także metoda pozwalająca wyszukać pojedynczy rekord. Jest to metoda `.search()`. Wykorzystuje ona pole zawierające wartość. Jeśli jednak więcej rekordów spełnia podane kryteria zostanie zwrócony tylko jeden!
 ```php
 // ...
 use Models\\User;
@@ -168,7 +168,7 @@ $User->search();
 // ...
 ```
 ### Własne metody
-Model możemy rozszezyc o własne metody:
+Model możemy rozszerzyć o własne metody:
 ```php
 namespace Models;
 use Core\Model;
@@ -200,7 +200,7 @@ class User extends Model{
 }
 ```
 ### ::getAll()
-Sam model posiada dodatkowe statyczną metodą `getAll($where = array())`, ktra zwraca listę wszystkich obiektow z bazy danych lub tylko wybranych po przekazaniu w argumencie tablicy kryteriow.
+Sam model posiada dodatkowe statyczną metodą `getAll($where = array())`, która zwraca listę wszystkich obiektów z bazy danych lub tylko wybranych po przekazaniu w argumencie tablicy kryteriów.
 ```php
 // ...
 use Models\\User;
@@ -209,15 +209,15 @@ $all_Users = User::getAll();
 $Kowalscy - Users::getAll(array('surname' => "Kowalski"));
 // ...
 ```
-## Klasa Response oraz system szablonow
-Skrypt korzysta z biblioteki SMARTY do kompilacji szablonow. Pliki szablonow znajdują się w katalogu `Views`. Cache biblioteki znajduje się w katalogu `tmp\` do ktorego scieżka jest ustalona w pliku `Configs\System.php`.
+## Klasa Response oraz system szablonów
+Skrypt korzysta z biblioteki SMARTY do kompilacji szablonów. Pliki szablonów znajdują się w katalogu `Views`. Cache biblioteki znajduje się w katalogu `tmp\` do którego ścieżka jest ustalona w pliku `Configs\System.php`.
 
 Więcej na temat korzystania z biblioteki SMARTY znajdziesz:
 1. [Wiki](https://pl.wikibooks.org/wiki/PHP/Smarty)
 2. [Oficjalna dokumentacja](https://www.smarty.net/documentation)
 
-Klasa `Core\Response` pozwala na szybkie wyświetalnie odpowiednich szablonow lub zwracac dane w postaci JSON.
-Aby przypisac dane do widoku należu użyc metody `.assign($nazwa, $wartosc)`, tak przekazane dane będą dostępne w szablonie lub zostaną zwrocne w formacie JSON. Wyświetlanie szablonu następuje po wywołaniu metody `.displayPage('nazwa_szablonu.tpl')`. Dane w formacie JSON możemy zwrcic poprzez metode `.getJSON()`.
+Klasa `Core\Response` pozwala na szybkie wyświetlanie odpowiednich szablonów lub zwracać dane w postaci JSON.
+Aby przypisać dane do widoku należy użyć metody `.assign($nazwa, $wartosc)`, tak przekazane dane będą dostępne w szablonie lub zostaną zwrócone w formacie JSON. Wyświetlanie szablonu następuje po wywołaniu metody `.displayPage('nazwa_szablonu.tpl')`. Dane w formacie JSON możemy zwrócić poprzez metodę `.getJSON()`.
 
 ```php
 namespace Controllers;
@@ -233,7 +233,7 @@ class Home{
     $resp->displayPage('Hello.tpl');
   }
 
-  //metoda wyświetlajaca dane w formacie json
+  //metoda wyświetlająca dane w formacie json
   public static function getHello(){
     $resp = new Response();
     $resp->assign('hello', 'Hello World !');
@@ -244,13 +244,13 @@ class Home{
 ```
 
 ## Obsługa tablic
-Postawiłem na bardzo prostą obsługę tablic. Klasa `Core\Tables` zawiera trzy metody `GET()`, `POST()` oraz `COOKIES()`. Ich użycie jest naprawdę proste, jako argument podajemy nazwę pola w tablicy GET, POST czy COOKIES. Wewnątrz metod znjduje się sprawdzenie czy podane pole w danej tablicy istnije jeśli nie otrzymamy wrtośc `false` zamiast komunikatu o błędzie.
+Postawiłem na bardzo prostą obsługę tablic. Klasa `Core\Tables` zawiera trzy metody `GET()`, `POST()` oraz `COOKIES()`. Ich użycie jest naprawdę proste jako argument podajemy nazwę pola w tablicy GET, POST czy COOKIES. Wewnątrz metod znajduje się sprawdzenie czy podane pole w danej tablicy istnie jeśli nie, otrzymamy wartość `false` zamiast komunikatu o błędzie.
 
 ## Debugowanie
-W pliku konfiguracyjnym `Configs/Debuging` mamy możliwośc właczenia lub wyłaczenia informaowania o błędach. Mozemy także włączy debugowanie zapytań SQL. Po włączeniu tej opcji listę zapytań wraz z opisem błędow mamy dostępną w zmiennej globalnej `$SQL_DEBUG_ARRAY`. Klasa `Core\Debuging` posiada metodą zwracjącą listę zapyatń oraz blędow postaci kodu HTML, dzięki czemu możemy bardzo łatwo wyświetli sobie błędy w widoku smarty wstawiając przed znacznikiem `</body>` ten fragment kodu `{$SQL_DEBUG_HTML|unescape:'html'}`.
+W pliku konfiguracyjnym `Configs/Debuging` mamy możliwość włączenia lub wyłączenia informowania o błędach. Możemy także włączy debugowanie zapytań SQL. Po włączeniu tej opcji listę zapytań wraz z opisem błędów mamy dostępną w zmiennej globalnej `$SQL_DEBUG_ARRAY`. Klasa `Core\Debuging` posiada metodą zwracającą listę zapytań oraz błędów postaci kodu HTML, dzięki czemu możemy bardzo łatwo wyświetli sobie błędy w widoku smarty wstawiając przed znacznikiem `</body>` ten fragment kodu `{$SQL_DEBUG_HTML|unescape:'html'}`.
 
 ## Walidacja danych
-Do walidacji danych otrzymanych na przykład z formularza na stronie zostałą stworzona klasa `Core/Validation` autorstwa [davidecesarano](https://github.com/davidecesarano).
+Do walidacji danych otrzymanych na przykład z formularza na stronie została stworzona klasa `Core/Validation` autorstwa [davidecesarano](https://github.com/davidecesarano).
 ### Przykład użycia
 ```php
 use Core\Validation;
@@ -273,8 +273,6 @@ if($val->isSuccess()){
     var_dump($val->getErrors());
 }
   ```
-Pełna dumentacja znajduje się tutaj: [davidecesarano/Validation](https://github.com/davidecesarano/Validation). W funkcji została jedynie zmieniona walidacja adresu email, ponieważ ta w oryginalnym kodzie działała nie poprawnie.
+Pełna dokumentacja znajduje się tutaj: [davidecesarano/Validation](https://github.com/davidecesarano/Validation). W funkcji została jedynie zmieniona walidacja adresu email, ponieważ ta w oryginalnym kodzie działała niepoprawnie.
 ## Pluginy
-Framework obsługi pluginy. Pluginy nalyży umiszczac w katalogu `/Plugins`. Dostępne pluginy znajdują się na [moim Githubie](https://github,com/kurzejapatryk)
-## Dodatkowa inforacja
-Dokumentacja jest w wersji beta. W najbliższym czasie zostanie ulepszona i poprawiona pod kątem błędow.
+Framework obsługi pluginy. Pluginy należy umieszczać w katalogu `/Plugins`. Dostępne pluginy znajdują się na [moim GitHubie](https://github,com/kurzejapatryk)
