@@ -14,7 +14,10 @@ use Core\Db;
 class Model{
 
   public static function getTableName(){
-    return __CLASS__::getTableName();
+    $class = __CLASS__;
+    $Object = new $class;
+    $table_name = $Object->getTableName();
+    return $table_name;
   }
 
   /**
@@ -27,7 +30,7 @@ class Model{
 
   public function __construct($id = null){
     $this->id = (int)$id;
-    $if($id){
+    if($id){
       $this->get();
     }
   }
