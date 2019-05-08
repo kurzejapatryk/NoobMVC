@@ -90,20 +90,20 @@ namespace Core;
             if($name == 'array'){
 
                 if(!is_array($this->value)){
-                    $this->errors[] = array('var' => $this->name, 'error' => "val_pattern");
+                    $this->errors[$this->name] = array('error' => "val_pattern");
                 }
 
             }elseif($name == 'email'){
               if($this->value != '' && !filter_var($this->value, FILTER_VALIDATE_EMAIL)){
 
-                  $this->errors[] = array('var' => $this->name, 'error' => "val_pattern");
+                  $this->errors[$this->name] = array('error' => "val_pattern");
               }
             }
             else{
 
                 $regex = '/^('.$this->patterns[$name].')$/u';
                 if($this->value != '' && !preg_match($regex, $this->value)){
-                    $this->errors[] = array('var' => $this->name, 'error' => "val_pattern");
+                    $this->errors[$this->name] = array('error' => "val_pattern");
                 }
 
             }
@@ -121,7 +121,7 @@ namespace Core;
 
             $regex = '/^('.$pattern.')$/u';
             if($this->value != '' && !preg_match($regex, $this->value)){
-                $this->errors[] = array('var' => $this->name, 'error' => "val_pattern");
+                $this->errors[$this->name] = array('error' => "val_pattern");
             }
             return $this;
 
@@ -135,7 +135,7 @@ namespace Core;
         public function required(){
 
             if((isset($this->file) && $this->file['error'] == 4) || ($this->value == '' || $this->value == null)){
-                $this->errors[] = array('var' => $this->name, 'error' => "val_required");
+                $this->errors[$this->name] = array('error' => "val_required");
             }
             return $this;
 
@@ -153,13 +153,13 @@ namespace Core;
             if(is_string($this->value)){
 
                 if(strlen($this->value) < $length){
-                    $this->errors[] = array('var' => $this->name, 'error' => "val_min");
+                    $this->errors[$this->name] = array('error' => "val_min");
                 }
 
             }else{
 
                 if($this->value < $length){
-                    $this->errors[] = array('var' => $this->name, 'error' => "val_min");
+                    $this->errors[$this->name] = array('error' => "val_min");
                 }
 
             }
@@ -179,13 +179,13 @@ namespace Core;
             if(is_string($this->value)){
 
                 if(strlen($this->value) > $length){
-                    $this->errors[] = array('var' => $this->name, 'error' => "val_max");
+                    $this->errors[$this->name] = array('error' => "val_max");
                 }
 
             }else{
 
                 if($this->value > $length){
-                    $this->errors[] = array('var' => $this->name, 'error' => "val_max");
+                    $this->errors[$this->name] = array('error' => "val_max");
                 }
 
             }
@@ -203,7 +203,7 @@ namespace Core;
         public function equal($value){
 
             if($this->value != $value){
-                $this->errors[] = array('var' => $this->name, 'error' => "val_equal");
+                $this->errors[$this->name] = array('error' => "val_equal");
             }
             return $this;
 
@@ -218,7 +218,7 @@ namespace Core;
         public function maxSize($size){
 
             if($this->file['error'] != 4 && $this->file['size'] > $size){
-                $this->errors[] = array('var' => $this->name, 'error' => "val_file_max_size", 'size' => number_format($size / 1048576, 2));
+                $this->errors[$this->name] = array('error' => "val_file_max_size", 'size' => number_format($size / 1048576, 2));
             }
             return $this;
 
@@ -232,7 +232,7 @@ namespace Core;
          */
         public function ext($extension){
             if($this->file['error'] != 4 && pathinfo($this->file['name'], PATHINFO_EXTENSION) != $extension && strtoupper(pathinfo($this->file['name'], PATHINFO_EXTENSION)) != $extension){
-                $this->errors[] = array('var' => $this->name, 'error' => "val_file_ext", 'ext' => $extension);
+                $this->errors[$this->name] = array('error' => "val_file_ext", 'ext' => $extension);
             }
             return $this;
 
@@ -274,8 +274,8 @@ namespace Core;
         public function displayErrors(){
 
             $html = '<ul>';
-                foreach($this->getErrors() as $error){
-                    $html .= '<li>'.$error.'</li>';
+                foreach($this->getErrors() as $name => $error){
+                    $html .= '<li>'.$name." - ".LANG['val_errors'][$error['error']].'</li>';
                 }
             $html .= '</ul>';
 

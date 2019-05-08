@@ -10,6 +10,7 @@
 namespace Core;
 
 use Smarty;
+
 use Core\Debuging;
 
 class Response{
@@ -29,7 +30,6 @@ class Response{
       'version' => VERSION,
       'language' => LANGUAGE,
       'url' => URL,
-      'lang' => LANG,
     );
     if(isset($_GET['page'])){
       if(isset($_GET['action'])){
@@ -69,6 +69,7 @@ class Response{
    * @access public
    */
   public function displayPage($view){
+    $this->assign('lang', LANG);
     if(SQL_DEBUG){
       $this->data['SQL_DEBUG_HTML'] = Debuging::getSQLDebugHTML();
     }else{
@@ -81,6 +82,22 @@ class Response{
     }
 
     $this->smrt->display(PATH . 'Views/' . $view);
+  }
+
+  public function getPage($view){
+    $this->assign('lang', LANG);
+    if(SQL_DEBUG){
+      $this->data['SQL_DEBUG_HTML'] = Debuging::getSQLDebugHTML();
+    }else{
+      $this->data['SQL_DEBUG_HTML'] = "";
+    }
+    if(is_array($this->data)){
+      foreach($this->data as $key => $value){
+        $this->smrt->assign($key, $value);
+      }
+    }
+
+    return $this->smrt->fetch(PATH . 'Views/' . $view);
   }
 
   /**

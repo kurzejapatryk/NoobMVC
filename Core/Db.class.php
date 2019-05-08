@@ -24,6 +24,7 @@ class Db{
     $con = null;
     try{
       $con = new PDO('mysql:host='.DB_HOST.';dbname='.DB_DATABASE, DB_USER, DB_PASSWORD);
+      $con->exec("SET CHARACTER SET utf8");
     }catch (PDOException $e) {
       define('SQL_ERROR', $e);
     }

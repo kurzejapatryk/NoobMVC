@@ -16,7 +16,7 @@ class Model{
   public static function getTableName(){
     $class = __CLASS__;
     $Object = new $class;
-    $table_name = $Object->getTableName();
+    $table_name = $Object->table;
     return $table_name;
   }
 
@@ -55,6 +55,7 @@ class Model{
    * @access public
    */
   public function save(){
+
     $vars = get_object_vars($this);
     if($vars['id']){
       $id = $vars['id'];
@@ -62,8 +63,8 @@ class Model{
     }else{
       $opr = 'add';
     }
-
-    $table = $this->getTableName();
+    
+    $table = $this->table;
 
     unset($vars['id']);
     unset($vars['table']);
@@ -124,7 +125,7 @@ class Model{
   public function del(){
     $vars = get_object_vars($this);
     $id = $vars['id'];
-    $table = $this->getTableName();
+    $table = $this->table;
     unset($vars['table']);
     unset($vars['id']);
     Db::delete('DELETE FROM '.$table.' WHERE id = ?',array($id));
@@ -140,7 +141,7 @@ class Model{
    */
   public function get(){
     $id = $this->id;
-    $table = $this->getTableName();
+    $table = $this->table;
     if($id){
       $SQL = "SELECT * FROM ".$table." WHERE id = ? LIMIT 1";
       $params = Db::select($SQL, array($id), true);
@@ -161,12 +162,15 @@ class Model{
 
   public function search(){
     $vars = get_object_vars($this);
-    $table = $this->getTableName();
+    $table = $this->table;
 
     $columns = "";
     $where_vars = array();
     $first = true;
 
+    unset($vars['table']);
+    unset($vars['id']);
+    
     foreach($vars as $key => $var){
       if($var){
         if(!$first){
@@ -183,8 +187,10 @@ class Model{
     if(count($where_vars)){
       $SQL = "SELECT * FROM ".$table." WHERE ".$columns." LIMIT 1";
       $params = Db::select($SQL, $where_vars, true);
-      foreach($params as $key => $val){
-        $this->{$key} = $val;
+      if(!empty($params)){
+        foreach($params as $key => $val){
+          $this->{$key} = $val;
+        }
       }
       return $this;
     }else{
@@ -192,7 +198,7 @@ class Model{
     }
   }
 
-  public static function getAll($where = array()){
+  public function getAll($where = array()){
     $table = $this->table;
     $className =  __CLASS__;
     $data = array();
@@ -216,12 +222,13 @@ class Model{
       if(is_array($resp)){
         $resp_data = array();
         foreach($resp as $row){
-          $Post = new $className();
+          $Obj = new $className();
           foreach($row as $key => $val){
-            $Post->{$key} = $val;
+            $Obj->{$key} = $val;
           }
-          $resp_data[] = $Post;
+          $resp_data[$Obj->id] = $Obj;
         }
+        return $resp_data;
       }else{
         return array();
       }
