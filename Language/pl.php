@@ -18,7 +18,7 @@
   "val_file_ext" => "Niedozwoleny format pliku.",
 
   /* Error pages */
-  "404" => "Strona nie istnieje.",
-  "500" => "Wewnętrzny błąd serwera."
+  "404" => "Strona nie istnieje",
+  "500" => "Wystąpił błąd serwera"
 
 ));

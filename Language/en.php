@@ -18,7 +18,7 @@
   "val_file_ext" => "File have illegal extension.",
 
   /* Error pages */
-  "404" => "This page is not exist.",
-  "500" => "Internal server error."
+  "404" => "This page is not exist",
+  "500" => "Internal server error"
 
 ));
