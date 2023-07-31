@@ -1,9 +1,5 @@
 <?php
 /************************************************|
-|* Author      | Patryk Kurzeja                 *|
-|* Date        | 14-01-2019                     *|
-|* email       | p.kurzeja@spheresystems.pl     *|
-|* Project     | SphereFramefork                *|
 |* Description | Obsługa debugowania            *|
 |************************************************/
 
