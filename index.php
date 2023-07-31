@@ -37,6 +37,9 @@ require_once('vendor/autoload.php');
 // load helpers functions
 require_once('helpers.php');
 
+//Autoload NoobMCV
+require_once('autoload.php');
+
 // Load console arguments
 if(isset($argv)){
   foreach ($argv as $arg) {
@@ -44,21 +47,6 @@ if(isset($argv)){
     if(count($e)==2) $_GET[$e[0]]=$e[1]; else $_GET[$e[0]]=0;
   }
 }
-
-/**
- * Ładowanie wywołanych klas
- * @return bool Zwraca czy operacja się powiodła
- * @author Patryk Kurzeja <p.kurzeja@spheresystems.pl>
- * @license https://opensource.org/licenses/mit-license.php MIT X11
- */
-function classLoader($name){
-  $className = (string) str_replace('\\', DIRECTORY_SEPARATOR, $name);
-  require_once($className.'.class.php');
-  return true;
-}
-spl_autoload_register('classLoader');
-
-
 
 // AntiCSRF
 if(!isset($_SESSION['csrf'])){
