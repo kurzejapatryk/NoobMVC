@@ -25,7 +25,7 @@ class ApiResponse{
 
     /**
      * Generuje odpowiedź JSON
-     * @author Patryk Kurzeja <patrykkurzeja.go@gmail.com>
+     * @author Patryk Kurzeja <patrykkurzeja@proton.me>
      * @license https://opensource.org/licenses/mit-license.php MIT X11
      * @access public
      */

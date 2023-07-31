@@ -18,7 +18,7 @@ class Model{
 
   /**
    * Konstruktor obiektu
-   * @author Patryk Kurzeja <patrykkurzeja.go@gmail.com>
+   * @author Patryk Kurzeja <patrykkurzeja@proton.me>
    * @param integer $id identyfikator obiektu
    * @license https://opensource.org/licenses/mit-license.php MIT X11
    * @access public
@@ -33,7 +33,7 @@ class Model{
 
   /**
    * Zwraca id obiektu
-   * @author Patryk Kurzeja <patrykkurzeja.go@gmail.com>
+   * @author Patryk Kurzeja <patrykkurzeja@proton.me>
    * @return integer identyfikator obiektu
    * @license https://opensource.org/licenses/mit-license.php MIT X11
    * @access public
@@ -45,7 +45,7 @@ class Model{
 
   /**
    * Zapisuje zmiany obiektu w bazie
-   * @author Patryk Kurzeja <patrykkurzeja.go@gmail.com>
+   * @author Patryk Kurzeja <patrykkurzeja@proton.me>
    * @return object zwraca obiekt modelu
    * @license https://opensource.org/licenses/mit-license.php MIT X11
    * @access public
@@ -114,7 +114,7 @@ class Model{
 
   /**
    * Usuwa obiekt z bazy
-   * @author Patryk Kurzeja <patrykkurzeja.go@gmail.com>
+   * @author Patryk Kurzeja <patrykkurzeja@proton.me>
    * @license https://opensource.org/licenses/mit-license.php MIT X11
    * @access public
    */
@@ -130,7 +130,7 @@ class Model{
 
   /**
    * Pobiera obiekt z bazy
-   * @author Patryk Kurzeja <patrykkurzeja.go@gmail.com>
+   * @author Patryk Kurzeja <patrykkurzeja@proton.me>
    * @return object zwraca pobrany obiekt
    * @license https://opensource.org/licenses/mit-license.php MIT X11
    * @access public
@@ -150,7 +150,7 @@ class Model{
 
   /**
    * Wyszukuje i pobiera obiekt z bazy
-   * @author Patryk Kurzeja <patrykkurzeja.go@gmail.com>
+   * @author Patryk Kurzeja <patrykkurzeja@proton.me>
    * @return object zwraca pobrany obiekt
    * @license https://opensource.org/licenses/mit-license.php MIT X11
    * @access public
