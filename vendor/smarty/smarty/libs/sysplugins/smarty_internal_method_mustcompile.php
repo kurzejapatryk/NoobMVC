@@ -32,7 +32,7 @@ class Smarty_Internal_Method_MustCompile
     {
         if (!$_template->source->exists) {
             if ($_template->_isSubTpl()) {
-                $parent_resource = " in '$_template->parent->template_resource}'";
+                $parent_resource = " in '{$_template->parent->template_resource}'";
             } else {
                 $parent_resource = '';
             }
@@ -41,11 +41,10 @@ class Smarty_Internal_Method_MustCompile
         if ($_template->mustCompile === null) {
             $_template->mustCompile = (!$_template->source->handler->uncompiled &&
                                        ($_template->smarty->force_compile || $_template->source->handler->recompiled ||
-                                        !$_template->compiled->exists || ($_template->smarty->compile_check &&
+                                        !$_template->compiled->exists || ($_template->compile_check &&
                                                                           $_template->compiled->getTimeStamp() <
                                                                           $_template->source->getTimeStamp())));
         }
-
         return $_template->mustCompile;
     }
 }

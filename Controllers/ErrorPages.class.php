@@ -7,17 +7,20 @@ class ErrorPages{
 
   public static function start(){
     $resp = new Response();
-    $resp->displayPage('ErrorPages/404.tpl');
+    $resp->assign("ecode", "404");
+    $resp->displayPage('Core/err.tpl');
   }
 
   public static function e404(){
     $resp = new Response();
-    $resp->displayPage('ErrorPages/404.tpl');
+    $resp->assign("ecode", "404");
+    $resp->displayPage('Core/err.tpl');
   }
 
 
   public static function e500(){
     $resp = new Response();
-    $resp->displayPage('ErrorPages/500.tpl');
+    $resp->assign("ecode", "500");
+    $resp->displayPage('Core/err.tpl');
   }
 }

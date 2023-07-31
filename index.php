@@ -8,7 +8,7 @@
 |************************************************/
 
 // check PHP Version
-if(phpversion()<'5.5.24' ){
+if(phpversion()<'7.1' ){
   echo 'Your version of PHP is '.phpversion().'. Required min. 5.5.24';
   exit;
 }

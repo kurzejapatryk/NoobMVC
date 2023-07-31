@@ -21,4 +21,8 @@
   "val_file_max_size" => "Plik jest zbyt duży.",
   "val_file_ext" => "Niedozwoleny format pliku.",
 
+  /* Error pages */
+  "404" => "Strona nie istnieje.",
+  "500" => "Wewnętrzny błąd serwera."
+
 ));

@@ -1,4 +1,4 @@
-# SphereFramework
+# NoobMVC
 Prosty Framework dla podstawowych aplikacji oraz początkujących programistów.
 
 ## Spis treści
@@ -15,8 +15,8 @@ Prosty Framework dla podstawowych aplikacji oraz początkujących programistów.
 * [Dodatkowa informacja](#Dodatkowa-inforacja)
 
 ## Technologie
-* PHP: >= 5.5.24
-* SMARTY: ^3.1
+* PHP: >= 7.1
+* SMARTY: ^4.3.2
 
 ## Struktura plików
 ```
