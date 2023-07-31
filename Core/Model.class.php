@@ -124,7 +124,7 @@ class Model{
   public function del(){
     $vars = get_object_vars($this);
     $id = $vars['id'];
-    $table = $this->table;
+    $table = static::$table;
     unset($vars['table']);
     unset($vars['id']);
     Db::delete('DELETE FROM '.$table.' WHERE id = ?',array($id));
@@ -140,7 +140,7 @@ class Model{
    */
   public function get(){
     $id = $this->id;
-    $table = $this->table;
+    $table = static::$table;
     if($id){
       $SQL = "SELECT * FROM ".$table." WHERE id = ? LIMIT 1";
       $params = Db::select($SQL, array($id), true);
@@ -161,7 +161,7 @@ class Model{
 
   public function search(){
     $vars = get_object_vars($this);
-    $table = $this->table;
+    $table = static::$table;
 
     $columns = "";
     $where_vars = array();
@@ -198,7 +198,7 @@ class Model{
   }
 
   public function getAll($where = array()){
-    $table = $this->table;
+    $table = static::$table;
     $className =  __CLASS__;
     $data = array();
     $SQL = "SELECT * FROM ".$table;

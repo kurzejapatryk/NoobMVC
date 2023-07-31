@@ -15,7 +15,7 @@ use Core\Db;
 class Session extends Model{
 
   public $id;                //INTEGER AUTO_INCREMENT INIQUE PRIMARY_KEY
-  
+
   protected static $table = 'sessions';
 
   protected static $schema = [
@@ -35,7 +35,7 @@ class Session extends Model{
   public $expire_datetime;
 
   public function getBySessionID($id){
-    $table = $this->table;
+    $table = self::$table;
     if($id){
       $SQL = "SELECT * FROM ".$table." WHERE session_id = ? LIMIT 1";
       $params = Db::select($SQL, array($id), true);

@@ -28,26 +28,27 @@ if (PHP_SAPI == "cli") {
         echo appInfo();
         exit;
     }
-    else if(isset($options["h"]) || isset($options["help"])) {
+    elseif(isset($options["h"]) || isset($options["help"])) {
         echo asciArt();
         echo "[-h] --help       | Show helps\n"
             ."[-v] --version    | Show app and core details\n"
             ."\n";
         exit;
     }
-    else if(isset($options["i"]) || isset($options["init"])){
+    elseif(isset($options["i"]) || isset($options["init"])){
 
         echo Plugins\Authentication\Models\User::createTable()."\n";
         echo Plugins\Authentication\Models\Session::createTable()."\n\n";
 
         $password = isset($options['i']) ? $options['i'] : $options['init'];
-        if(strlen($password) > 8){
+        if(strlen($password) >= 8){
             $user = new Plugins\Authentication\Models\User();
             $user->user_name = "admin";
             $user->setPassword($password);
+            $user->role = 1;
             $user->save();
-            echo "User 'admin' is added ok!";
-        }else if(strlen($password) < 8 && strlen($password) > 0){
+            echo "User 'admin' is added ok! Password is ".$password.".";
+        }elseif(strlen($password) < 8 && strlen($password) > 0){
             echo "Password is too short. Minimum lenght is 8 chars.";
         }
         else {

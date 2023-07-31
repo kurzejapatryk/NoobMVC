@@ -12,13 +12,12 @@ if(phpversion()<'7.2' ){
 // start session
 session_start();
 
-// load configs
-$conf_dir = "Configs/";
-$dir = scandir($conf_dir);
-foreach ($dir as $check_dir){
-  if(is_file($conf_dir . $check_dir))
-    require_once($conf_dir . $check_dir);
-}
+// load helpers functions
+require_once('helpers.php');
+
+//Autoload NoobMCV
+require_once('autoload.php');
+
 
 // set debuging raporting
 
@@ -34,11 +33,6 @@ if( CODE_DEBUG ) {
 require_once('vendor/autoload.php');
 
 
-// load helpers functions
-require_once('helpers.php');
-
-//Autoload NoobMCV
-require_once('autoload.php');
 
 // Load console arguments
 if(isset($argv)){

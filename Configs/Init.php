@@ -5,4 +5,4 @@
 
 /* Init */
 
-define('START_CONTROLLER', 'ErrorPages'); // Kontroler startowy
+define('START_CONTROLLER', 'Home'); // Kontroler startowy

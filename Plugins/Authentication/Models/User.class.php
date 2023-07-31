@@ -29,7 +29,7 @@ class User extends Model{
 
 
   public function getByUserName($user_name){
-    $table = $this->table;
+    $table = self::$table;
     if($user_name){
       $SQL = "SELECT * FROM ".$table." WHERE user_name = ? LIMIT 1";
       $params = Db::select($SQL, array($user_name), true);

@@ -39,6 +39,7 @@ class Db{
    */
   public static function select($query,$var = array(), $assoc = false){
     $con = Db::connect();
+    $result = NULL;
     try{
 			  $qr = $con->prepare($query);
         if(!$qr){
@@ -123,6 +124,7 @@ class Db{
    * @access public
    */
   public static function insert($query,$var = array()){
+    $last_id = NULL;
 		try{
        $PDO = Db::connect();
 				$qr = $PDO->prepare($query);
@@ -142,7 +144,6 @@ class Db{
             $error = $qr->errorInfo();
           }else{
             $error = array(0,0,"Is ok!");
-            $id = $PDO->lastInsertId();
     				$qr->closeCursor();
             $last_id = $PDO->lastInsertId();
           }
