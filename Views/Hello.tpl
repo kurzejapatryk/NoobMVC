@@ -1,5 +1,4 @@
 <h1>{$lang['hello']}</h1>
-{$user}
 
 
 {if SQL_DEBUG}

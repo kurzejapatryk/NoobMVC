@@ -5,7 +5,7 @@
 
 /* Error raporting */
 define('CODE_DEBUG', true);     // Raportowanie błędów kodu
-define('SQL_DEBUG', true);      // Raportowanie błędów bazy danych
+define('SQL_DEBUG', false);      // Raportowanie błędów bazy danych
 
 
 
