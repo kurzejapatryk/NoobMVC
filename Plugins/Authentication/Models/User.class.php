@@ -1,4 +1,5 @@
 <?php
+
 namespace Plugins\Authentication\Models;
 
 use Core\Model;
@@ -7,12 +8,22 @@ use Core\Db;
 class User extends Model{
 
   public $id;                //INTEGER AUTO_INCREMENT INIQUE PRIMARY_KEY
-  public $table = 'users';
+  
+  protected static $table = 'users';
+  protected static $schema = array(
+    'id' => "INT PRIMARY KEY",
+    'user_name' => "VARCHAR(100) NOT NULL UNIQUE",
+    'name' => "VARCHAR(100)",
+    'surname' => "VARCHAR(100)",
+    'password' => "VARCHAR(255) NOT NULL",
+    'email' => "VARCHAR(255) UNIQUE",
+    'role' => "INT"
+  );
 
   public $user_name;
   public $name;
   public $surname;
-  public $password;
+  protected $password;
   public $email;
   public $role;
 
@@ -27,5 +38,13 @@ class User extends Model{
       }
     }
     return $this;
+  }
+
+  public function setPassword($password){
+    $this->password = md5($password.SALT);
+  }
+
+  public function getPassword(){
+    return $this->password;
   }
 }

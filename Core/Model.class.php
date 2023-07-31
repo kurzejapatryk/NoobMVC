@@ -5,14 +5,17 @@
 
 namespace Core;
 
+use Exception;
 use Core\Db;
 
 class Model{
 
+  public $id;
+  protected static $table;
+  protected static $schema;
+
   public static function getTableName(){
-    $class = __CLASS__;
-    $Object = new $class;
-    $table_name = $Object->table;
+    $table_name = static::$table;
     return $table_name;
   }
 
@@ -60,7 +63,7 @@ class Model{
       $opr = 'add';
     }
     
-    $table = $this->table;
+    $table = static::$table;
 
     unset($vars['id']);
     unset($vars['table']);
@@ -219,6 +222,7 @@ class Model{
         $resp_data = array();
         foreach($resp as $row){
           $Obj = new $className();
+          $row = is_array($row) ? $row : array();
           foreach($row as $key => $val){
             $Obj->{$key} = $val;
           }
@@ -232,5 +236,22 @@ class Model{
     }else{
       throw new Exception("First parametr of function BlogPost->getAll must be array()!");
     }
+  }
+
+  public static function createTable(){
+    $SQL = "CREATE TABLE " . static::$table . " ( ";
+    $coma = false;
+    foreach(static::$schema as $key => $val){
+      if($coma){
+        $SQL .= ", ";
+      }
+      else {
+        $coma = true;
+      }
+      $SQL .= $key . " " . $val;
+    }
+    $SQL .= " )";
+    Db::create($SQL);
+    return $SQL;
   }
 }

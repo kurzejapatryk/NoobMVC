@@ -6,6 +6,7 @@
 
 namespace Core;
 use \PDO;
+use \PDOException;
 
 class Db{
 
@@ -197,4 +198,33 @@ class Db{
     $con = null;
     return $result;
   }
+
+  public static function create($query){
+		try{
+       $PDO = Db::connect();
+				$qr = $PDO->prepare($query);
+				$i=1;
+        if(!$qr){
+          $error = $PDO->errorInfo();
+        }else{
+          $resp = $qr->execute();
+          if(!$resp){
+            $error = $qr->errorInfo();
+          }else{
+            $error = array(0,0,"Is ok!");
+          }
+        }
+
+        if(SQL_DEBUG){
+          $GLOBALS['SQL_DEBUG_ARRAY'][] = array('SQL' => $query, 'vars' => array(), 'error' => $error[2]);
+        }
+
+    }catch (PDOException $e){
+      $con = null;
+    }
+    $con = null;
+  }
+
 }
+
+

@@ -15,14 +15,24 @@ use Core\Db;
 class Session extends Model{
 
   public $id;                //INTEGER AUTO_INCREMENT INIQUE PRIMARY_KEY
-  public $table = 'sessions';
+  
+  protected static $table = 'sessions';
+
+  protected static $schema = [
+    'id' => "INT PRIMARY KEY",
+    'session_id' => "VARCHAR(100) NOT NULL",
+    'user_id' => "INT NOT NULL",
+    'auth_key' => "VARCHAR(255) NOT NULL",
+    'created_datetime' => "TIMESTAMP NOT NULL",
+    'email' => "VARCHAR(255) NOT NULL",
+    'expire_datetime' => "VARCHAR(255) NOT NULL",
+  ];
 
   public $session_id;
   public $user_id;
   public $auth_key;
-  public $create_datetime;
-  public $expired_datetime;
-
+  public $created_datetime;
+  public $expire_datetime;
 
   public function getBySessionID($id){
     $table = $this->table;

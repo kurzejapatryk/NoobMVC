@@ -32,7 +32,7 @@ class Authentication{
                   $session->getBySessionID($this->session);
                   if($session->auth_key == $this->auth_key){
                       $this->active_user = true;
-                      $session->expired_datetime = date(DB_DATETIME_FORMAT, time() + SESSION_EXPIRED_TIME);
+                      $session->expire_datetime = date(DB_DATETIME_FORMAT, time() + SESSION_EXPIRED_TIME);
                       $session->save();
                   }else{
                       $this->restart_session();
@@ -81,13 +81,13 @@ class Authentication{
     public function log_in($user_name, $password){
         $user = new User();
         $user->getByUserName($user_name);
-        if($user->password == md5($password . SALT)){
+        if($user->getPassword() == md5($password . SALT)){
             $session = new session();
             $session->session_id = $this->session;
             $session->user_id = $user->id;
             $session->auth_key = $this->gen_auth_key();
-            $session->create_datetime = date(DB_DATETIME_FORMAT);
-            $session->expired_datetime = date(DB_DATETIME_FORMAT, time() + SESSION_EXPIRED_TIME);
+            $session->created_datetime = date(DB_DATETIME_FORMAT);
+            $session->expire_datetime = date(DB_DATETIME_FORMAT, time() + SESSION_EXPIRED_TIME);
             $session->save();
             $this->user = $user;
             $_SESSION['USER'] = $user->id;
