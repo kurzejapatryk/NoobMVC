@@ -1,9 +1,5 @@
 <?php
 /************************************************|
-|* Author      | Patryk Kurzeja                 *|
-|* Date        | 15-11-2017                     *|
-|* email       | p.kurzeja@spheresystems.pl     *|
-|* Project     | SphereFramefork                *|
 |* Description | Kontroler bazy danych mysql    *|
 |************************************************/
 
@@ -15,7 +11,7 @@ class Db{
 
   /**
    * Nawiązuje połączenie z bazą
-   * @author Patryk Kurzeja <p.kurzeja@spheresystems.pl>
+   * @author Patryk Kurzeja <patrykkurzeja.go@gmail.com>
    * @return object połączenie z bazą w PDO
    * @license https://opensource.org/licenses/mit-license.php MIT X11
    * @access public
@@ -33,7 +29,7 @@ class Db{
 
   /**
    * Pobiera rekordy z bazy
-   * @author Patryk Kurzeja <p.kurzeja@spheresystems.pl>
+   * @author Patryk Kurzeja <patrykkurzeja.go@gmail.com>
    * @param string $query Zapytanie
    * @param mixed[] $var zmienne do zapytania SQL
    * @return string[] Wynik zapytania PDOStatement
@@ -77,7 +73,7 @@ class Db{
 
   /**
    * Usuwa rekordy
-   * @author Patryk Kurzeja <p.kurzeja@spheresystems.pl>
+   * @author Patryk Kurzeja <patrykkurzeja.go@gmail.com>
    * @param string $query Zapytanie
    * @param mixed[] $var zmienne do zapytania SQL
    * @return integer Liczba usunietych rekordów
@@ -118,7 +114,7 @@ class Db{
 
   /**
    * Dodaje rekord do bazy
-   * @author Patryk Kurzeja <p.kurzeja@spheresystems.pl>
+   * @author Patryk Kurzeja <patrykkurzeja.go@gmail.com>
    * @param string $query Zapytanie
    * @param mixed[] $var zmienne do zapytania SQL
    * @return int Id nowego rekordu
@@ -164,7 +160,7 @@ class Db{
 
   /**
    * Aktualizuje rekordy w bazie
-   * @author Patryk Kurzeja <p.kurzeja@spheresystems.pl>
+   * @author Patryk Kurzeja <patrykkurzeja.go@gmail.com>
    * @param string $query Zapytanie
    * @param mixed[] $var zmienne do zapytania SQL
    * @return int liczba zmodyfikowanych elementów

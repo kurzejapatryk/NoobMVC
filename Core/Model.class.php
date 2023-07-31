@@ -1,9 +1,5 @@
 <?php
 /************************************************|
-|* Author      | Patryk Kurzeja                 *|
-|* Date        | 15-11-2017                     *|
-|* email       | p.kurzeja@spheresystems.pl     *|
-|* Project     | SphereFramefork                *|
 |* Description | Szablon modelu                 *|
 |************************************************/
 
@@ -22,7 +18,7 @@ class Model{
 
   /**
    * Konstruktor obiektu
-   * @author Patryk Kurzeja <p.kurzeja@spheresystems.pl>
+   * @author Patryk Kurzeja <patrykkurzeja.go@gmail.com>
    * @param integer $id identyfikator obiektu
    * @license https://opensource.org/licenses/mit-license.php MIT X11
    * @access public
@@ -37,7 +33,7 @@ class Model{
 
   /**
    * Zwraca id obiektu
-   * @author Patryk Kurzeja <p.kurzeja@spheresystems.pl>
+   * @author Patryk Kurzeja <patrykkurzeja.go@gmail.com>
    * @return integer identyfikator obiektu
    * @license https://opensource.org/licenses/mit-license.php MIT X11
    * @access public
@@ -49,7 +45,7 @@ class Model{
 
   /**
    * Zapisuje zmiany obiektu w bazie
-   * @author Patryk Kurzeja <p.kurzeja@spheresystems.pl>
+   * @author Patryk Kurzeja <patrykkurzeja.go@gmail.com>
    * @return object zwraca obiekt modelu
    * @license https://opensource.org/licenses/mit-license.php MIT X11
    * @access public
@@ -118,7 +114,7 @@ class Model{
 
   /**
    * Usuwa obiekt z bazy
-   * @author Patryk Kurzeja <p.kurzeja@spheresystems.pl>
+   * @author Patryk Kurzeja <patrykkurzeja.go@gmail.com>
    * @license https://opensource.org/licenses/mit-license.php MIT X11
    * @access public
    */
@@ -134,7 +130,7 @@ class Model{
 
   /**
    * Pobiera obiekt z bazy
-   * @author Patryk Kurzeja <p.kurzeja@spheresystems.pl>
+   * @author Patryk Kurzeja <patrykkurzeja.go@gmail.com>
    * @return object zwraca pobrany obiekt
    * @license https://opensource.org/licenses/mit-license.php MIT X11
    * @access public
@@ -154,7 +150,7 @@ class Model{
 
   /**
    * Wyszukuje i pobiera obiekt z bazy
-   * @author Patryk Kurzeja <p.kurzeja@spheresystems.pl>
+   * @author Patryk Kurzeja <patrykkurzeja.go@gmail.com>
    * @return object zwraca pobrany obiekt
    * @license https://opensource.org/licenses/mit-license.php MIT X11
    * @access public

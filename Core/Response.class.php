@@ -1,9 +1,5 @@
 <?php
 /************************************************|
-|* Author      | Patryk Kurzeja                 *|
-|* Date        | 15-11-2017                     *|
-|* email       | p.kurzeja@spheresystems.pl     *|
-|* Project     | SphereFramefork                *|
 |* Description | Klasa odpowiedzi               *|
 |************************************************/
 
@@ -20,7 +16,7 @@ class Response{
 
   /**
    * Konstruktor, wpisuje standardowe zmienne do pola data, ustawia smarty
-   * @author Patryk Kurzeja <p.kurzeja@spheresystems.pl>
+   * @author Patryk Kurzeja <patrykkurzeja.go@gmail.com>
    * @license https://opensource.org/licenses/mit-license.php MIT X11
    * @access public
    */
@@ -51,7 +47,7 @@ class Response{
 
   /**
    * Dodaje zmienne do widoku
-   * @author Patryk Kurzeja <p.kurzeja@spheresystems.pl>
+   * @author Patryk Kurzeja <patrykkurzeja.go@gmail.com>
    * @param string $name Nazwa zmiennej w widoku
    * @param string $value Wartość zmiennje w widoku
    * @license https://opensource.org/licenses/mit-license.php MIT X11
@@ -63,7 +59,7 @@ class Response{
 
   /**
    * Wyświetla widok
-   * @author Patryk Kurzeja <p.kurzeja@spheresystems.pl>
+   * @author Patryk Kurzeja <patrykkurzeja.go@gmail.com>
    * @param string $view plik widoku
    * @license https://opensource.org/licenses/mit-license.php MIT X11
    * @access public
@@ -102,7 +98,7 @@ class Response{
 
   /**
    * Generuje odpowiedź JSON
-   * @author Patryk Kurzeja <p.kurzeja@spheresystems.pl>
+   * @author Patryk Kurzeja <patrykkurzeja.go@gmail.com>
    * @license https://opensource.org/licenses/mit-license.php MIT X11
    * @access public
    */
