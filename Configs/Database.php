@@ -6,7 +6,7 @@
 define('DB_type', 'MySQL');                     // Temporary only MySQL, integration of other databases later.
 
 $DB_CONF = [
-    'HOST' => '127.0.0.1',                      // Database host
+    'HOST' => 'localhost',                      // Database host
     'PORT' => '3306',                           // Database port
     'USER' => 'root',                           // Database username
     'PASSWORD' => '',                           // Database password
@@ -20,7 +20,7 @@ $DB_CONF = [
 */
 
 // Test database
-if(isset($_SERVER['CI']) || isset($_SERVER["DOCKER"]) || isset($_SERVER['SERVER_ADDR']) && str_contains($_SERVER['SERVER_ADDR'], '172.') ||isset($GLOBALS['DB_TEST']) || getenv('DB_TEST') == 'true'){
+if(isset($_SERVER['CI']) || isset($_SERVER["DOCKER"]) || isset($_SERVER['SERVER_ADDR']) && str_contains($_SERVER['SERVER_ADDR'], '172.') ||isset($GLOBALS['DB_TEST'])){
     $DB_CONF = [
         'HOST' => 'mysql',
         'PORT' => '3306',            

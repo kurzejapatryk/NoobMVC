@@ -6,7 +6,6 @@
     <php>
         <ini name="display_errors" value="On"/>
         <ini name="error_reporting" value="-1"/>
-        <env name="DB_TEST" value="true"/>
     </php>
     <testsuites>
         <testsuite name="My Project Tests">
