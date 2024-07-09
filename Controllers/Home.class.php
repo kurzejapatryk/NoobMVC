@@ -22,7 +22,7 @@ class Home{
    */
   public static function start(){
     $Response = new Response();
-    $Response->displayPage("Hellow.tpl");
+    $Response->displayPage("Hello.tpl");
   }
 
 }
