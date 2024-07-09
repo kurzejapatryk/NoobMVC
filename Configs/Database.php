@@ -6,7 +6,7 @@
 define('DB_type', 'MySQL');                     // Temporary only MySQL, integration of other databases later.
 
 $DB_CONF = [
-    'HOST' => 'localhost',                      // Database host
+    'HOST' => 'mysql',                      // Database host
     'PORT' => '3306',                           // Database port
     'USER' => 'db_user',                        // Database username
     'PASSWORD' => 'password123',                // Database password
