@@ -27,6 +27,3 @@ RUN php composer.phar install --prefer-dist --no-ansi --no-interaction --no-prog
 # See https://docs.docker.com/go/dockerfile-user-best-practices/
 USER www-data
 
-# Run PHP unit tests
-CMD ["php", "vendor/bin/phpunit", "--configuration", "phpunit.xml"]
-
