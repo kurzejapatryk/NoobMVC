@@ -1,20 +1,23 @@
 <?php
 /************************************************|
-|* Description | Kontroler bazy danych mysql    *|
+|* Description | MySQL database controller      *|
 |************************************************/
 
-
 namespace Core;
+
 use \PDO;
 use \PDOException;
 
+/**
+ * Class Db
+ * Database controller
+ * @package Core
+ */
 class Db{
 
   /**
-   * Nawiązuje połączenie z bazą
-   * @author Patryk Kurzeja <patrykkurzeja@proton.me>
-   * @return object połączenie z bazą w PDO
-   * @license https://opensource.org/licenses/mit-license.php MIT X11
+   * Establishes a connection to the database
+   * @return object PDO database connection
    * @access public
    */
   public static function connect(){
@@ -29,43 +32,39 @@ class Db{
   }
 
   /**
-   * Pobiera rekordy z bazy
-   * @author Patryk Kurzeja <patrykkurzeja@proton.me>
-   * @param string $query Zapytanie
-   * @param mixed[] $var zmienne do zapytania SQL
-   * @return string[] Wynik zapytania PDOStatement
-   * @license https://opensource.org/licenses/mit-license.php MIT X11
+   * Retrieves records from the database
+   * @param string $query Query
+   * @param mixed[] $var SQL query variables
+   * @return string[] Result of the PDOStatement query
    * @access public
    */
-  public static function select($query,$var = array(), $assoc = false){
+  public static function select($query, $var = array(), $assoc = false){
     $con = Db::connect();
     $result = NULL;
     try{
-			  $qr = $con->prepare($query);
-        if(!$qr){
-           $error = $con->errorInfo();
-        }else{
-  				$i=1;
-  				foreach($var as $value){
-  					$qr->bindValue($i, $value);
-  					$i++;
-  				}
-  				$result = $qr->execute();
-          if(!$result){
-             $error = $qr->errorInfo();
-          }else{
-            $error = array(0,0,"Is ok!");
-            if($assoc){
-              $result = $qr->fetch(PDO::FETCH_ASSOC);
-            }else{
-    				  $result = $qr->fetchAll();
-            }
-    				$qr->closeCursor();
-          }
-          if(SQL_DEBUG){
-            $GLOBALS['SQL_DEBUG_ARRAY'][] = array('SQL' => $query, 'vars' => $var, 'error' => $error[2]);
-          }
+      $qr = $con->prepare($query);
+      if(!$qr){
+         $error = $con->errorInfo();
+      }else{
+        $i=1;
+        foreach($var as $value){
+          $qr->bindValue($i, $value);
+          $i++;
         }
+        $result = $qr->execute();
+        if(!$result){
+           $error = $qr->errorInfo();
+        }else{
+          $error = array(0,0,"Is ok!");
+          if($assoc){
+            $result = $qr->fetch(PDO::FETCH_ASSOC);
+          }else{
+            $result = $qr->fetchAll();
+          }
+          $qr->closeCursor();
+        }
+        $GLOBALS['SQL_DEBUG_ARRAY'][] = array('SQL' => $query, 'vars' => $var, 'error' => $error[2], 'result' => $result);
+      }
     }catch (PDOException $e){
       $con = null;
     }
@@ -74,61 +73,55 @@ class Db{
   }
 
   /**
-   * Usuwa rekordy
-   * @author Patryk Kurzeja <patrykkurzeja@proton.me>
-   * @param string $query Zapytanie
-   * @param mixed[] $var zmienne do zapytania SQL
-   * @return integer Liczba usunietych rekordów
-   * @license https://opensource.org/licenses/mit-license.php MIT X11
+   * Deletes records from the database
+   * @param string $query Query
+   * @param mixed[] $var SQL query variables
+   * @return integer Number of deleted records
    * @access public
    */
   public static function delete($query,$var = array()){
       $con = Db::connect();
       $result=0;
-		  try{
-			     $qr = $con->prepare($query);
-           if(!$qr){
-             $error = $con->errorInfo();
-           }else{
-  			     $i=1;
-  				   foreach($var as $value){
-  					        $qr->bindValue($i, $value);
-  					        $i++;
-  				   }
-  				   $result = $qr->execute();
-             if(!$result){
-               $error = $qr->errorInfo();
-             }else{
-                 $error = array(0,0,"Is ok!");
-             }
-             if(SQL_DEBUG){
-               $GLOBALS['SQL_DEBUG_ARRAY'][] = array('SQL' => $query, 'vars' => $var, 'error' => $error[2]);
-             }
-  				   $qr->closeCursor();
+      try{
+         $qr = $con->prepare($query);
+         if(!$qr){
+           $error = $con->errorInfo();
+         }else{
+           $i=1;
+           foreach($var as $value){
+                $qr->bindValue($i, $value);
+                $i++;
            }
-			}catch(PDOException $e) {
+           $result = $qr->execute();
+           if(!$result){
+             $error = $qr->errorInfo();
+           }else{
+               $error = array(0,0,"Is ok!");
+           }
+            $GLOBALS['SQL_DEBUG_ARRAY'][] = array('SQL' => $query, 'vars' => $var, 'error' => $error[2], 'result' => $result);
+           $qr->closeCursor();
+         }
+      }catch(PDOException $e) {
         $con = null;
-		}
+    }
     $con = null;
-		return $result;
+    return $result;
   }
 
 
   /**
-   * Dodaje rekord do bazy
-   * @author Patryk Kurzeja <patrykkurzeja@proton.me>
-   * @param string $query Zapytanie
-   * @param mixed[] $var zmienne do zapytania SQL
-   * @return int Id nowego rekordu
-   * @license https://opensource.org/licenses/mit-license.php MIT X11
+   * Adds a record to the database
+   * @param string $query Query
+   * @param mixed[] $var SQL query variables
+   * @return int Id of the new record
    * @access public
    */
   public static function insert($query,$var = array()){
     $last_id = NULL;
-		try{
+    try{
        $PDO = Db::connect();
-				$qr = $PDO->prepare($query);
-				$i=1;
+        $qr = $PDO->prepare($query);
+        $i=1;
         if(!$qr){
           $error = $PDO->errorInfo();
         }else{
@@ -144,16 +137,15 @@ class Db{
             $error = $qr->errorInfo();
           }else{
             $error = array(0,0,"Is ok!");
-    				$qr->closeCursor();
+            $qr->closeCursor();
             $last_id = $PDO->lastInsertId();
           }
         }
 
-        if(SQL_DEBUG){
-          $GLOBALS['SQL_DEBUG_ARRAY'][] = array('SQL' => $query, 'vars' => $var, 'error' => $error[2]);
-        }
+        $GLOBALS['SQL_DEBUG_ARRAY'][] = array('SQL' => $query, 'vars' => $var, 'error' => $error[2]);
 
     }catch (PDOException $e){
+      $GLOBALS['SQL_DEBUG_ARRAY'][] = array('SQL' => $query, 'vars' => $var, 'error' => $e->getMessage());
       $con = null;
     }
     $con = null;
@@ -161,37 +153,33 @@ class Db{
   }
 
   /**
-   * Aktualizuje rekordy w bazie
-   * @author Patryk Kurzeja <patrykkurzeja@proton.me>
-   * @param string $query Zapytanie
-   * @param mixed[] $var zmienne do zapytania SQL
-   * @return int liczba zmodyfikowanych elementów
-   * @license https://opensource.org/licenses/mit-license.php MIT X11
+   * Updates records in the database
+   * @param string $query Query
+   * @param mixed[] $var SQL query variables
+   * @return int Number of modified elements
    * @access public
    */
   public static function update($query,$var = array()){
     $con = Db::connect();
     $result=0;
-		try{
-				$qr = $con->prepare($query);
+    try{
+        $qr = $con->prepare($query);
         if(!$qr){
           $error = $con->errorInfo();
         }else{
-  				$i=1;
-  				foreach($var as $value){
-  					$qr->bindValue($i, $value);
-  					$i++;
-  				}
-  				$result = $qr->execute();
+          $i=1;
+          foreach($var as $value){
+            $qr->bindValue($i, $value);
+            $i++;
+          }
+          $result = $qr->execute();
           if(!$result){
             $error = $qr->errorInfo();
           }else{
             $error = array(0,0,"Is ok!");
           }
-          if(SQL_DEBUG){
-            $GLOBALS['SQL_DEBUG_ARRAY'][] = array('SQL' => $query, 'vars' => $var, 'error' => $error[2]);
-          }
-  				$qr->closeCursor();
+          $GLOBALS['SQL_DEBUG_ARRAY'][] = array('SQL' => $query, 'vars' => $var, 'error' => $error[2], 'result' => $result);
+          $qr->closeCursor();
         }
     }catch (PDOException $e){
       $con = null;
@@ -200,11 +188,17 @@ class Db{
     return $result;
   }
 
+  /**
+   * Creates records in the database
+   * @param string $query Query
+   * @return void
+   */
   public static function create($query){
-		try{
-       $PDO = Db::connect();
-				$qr = $PDO->prepare($query);
-				$i=1;
+    $resp = false;
+    try{
+        $PDO = Db::connect();
+        $qr = $PDO->prepare($query);
+        $i=1;
         if(!$qr){
           $error = $PDO->errorInfo();
         }else{
@@ -216,16 +210,31 @@ class Db{
           }
         }
 
-        if(SQL_DEBUG){
-          $GLOBALS['SQL_DEBUG_ARRAY'][] = array('SQL' => $query, 'vars' => array(), 'error' => $error[2]);
-        }
+        $GLOBALS['SQL_DEBUG_ARRAY'][] = array('SQL' => $query, 'vars' => array(), 'error' => $error[2]);
 
     }catch (PDOException $e){
       $con = null;
     }
     $con = null;
+    return $resp;
   }
 
+  /**
+   * Checks if a table exists
+   * @param string $table Table name
+   * @return bool
+   * @access public
+   */
+  public static function tableExists($table){
+    $con = Db::connect();
+    $result = $con->query("SHOW TABLES LIKE '".$table."'");
+    $con = null;
+    if($result->rowCount() > 0){
+      return true;
+    }else{
+      return false;
+    }
+  }
+  
 }
-
 

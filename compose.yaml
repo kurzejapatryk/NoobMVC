@@ -1,0 +1,45 @@
+services:
+  server:
+    container_name: apache-noobMVC
+    build:
+      context: .
+    ports:
+      - 80:80
+    develop:
+      watch:
+        - action: sync
+          path: ./
+          target: /var/www/html
+          ignore:
+            - vendor/
+            - tmp/
+            - Uploads/
+        - action: rebuild
+          path: composer.json
+
+  mysql:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: test_db
+      MYSQL_USER: db_user
+      MYSQL_PASSWORD: password123
+      DB_HOST: mysql
+    ports:
+      - 3306:3306
+    volumes:
+      -  database:/var/lib/mysql
+      - ./test_db.sql:/docker-entrypoint-initdb.d/dump.sql
+
+  phpmyadmin:
+    image: phpmyadmin
+    ports:
+      - 8080:80
+    depends_on:
+      - mysql
+    environment:
+      - PMA_HOST=mysql
+
+volumes:
+  database:

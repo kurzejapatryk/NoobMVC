@@ -1,10 +1,10 @@
 <?php
 /************************************************|
-|* Description | Konfiguracja danych lokalnych  *|
+|* Description | Configuration of locale data    *|
 |************************************************/
 
 /* Local */
-define('LANGUAGE', 'pl');                   // Wyświetlany język
-define('DATE_FORMAT', 'Y-m-d');             // Format daty
-define('TIME_FORMAT', 'H:i:s');             // Format czasu
-define('DATETIME_FORMAT', 'Y-m-d H:i:s');   // Format pełnego zapisu czasu
+define('LANGUAGE', 'pl');                   // Displayed language
+define('DATE_FORMAT', 'Y-m-d');             // Date format
+define('TIME_FORMAT', 'H:i:s');             // Time format
+define('DATETIME_FORMAT', 'Y-m-d H:i:s');   // Full datetime format

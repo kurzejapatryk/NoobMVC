@@ -1,6 +1,6 @@
 <?php
 /************************************************|
-|* Description | Szablon modelu                 *|
+|* Description | Model template                 *|
 |************************************************/
 
 namespace Core;
@@ -8,55 +8,106 @@ namespace Core;
 use Exception;
 use Core\Db;
 
+/**
+ * Model Class
+ * Model template
+ * @package Core
+ */
 class Model{
 
   public $id;
   protected static $table;
   protected static $schema;
 
+  /**
+   * Object constructor
+   * @param integer $id object identifier
+   * @license https://opensource.org/licenses/mit-license.php MIT X11
+   * @access public
+   */
+  public function __construct($id = null){
+    if(!is_null($id)){
+      $this->id = (int)$id;
+      $this->get();
+    }
+  }
+
+  /**
+   * Returns the table name in the database
+   * @return string returns the table name
+   * @license https://opensource.org/licenses/mit-license.php MIT X11
+   * @access public
+   */
   public static function getTableName(){
     $table_name = static::$table;
     return $table_name;
   }
 
   /**
-   * Konstruktor obiektu
-   * @author Patryk Kurzeja <patrykkurzeja@proton.me>
-   * @param integer $id identyfikator obiektu
+   * Returns the table schema in the database
+   * @return array returns the table schema
    * @license https://opensource.org/licenses/mit-license.php MIT X11
    * @access public
    */
+  public static function getTableSchema(){
+    $table_schema = static::$schema;
+    return $table_schema;
+  }
 
-  public function __construct($id = null){
-    $this->id = (int)$id;
-    if($id){
-      $this->get();
+  /**
+   * Checks if the object variable exists
+   * @param string $name variable name
+   * @return boolean returns true if the variable exists
+   * @license https://opensource.org/licenses/mit-license.php MIT X11
+   * @access public
+   */
+  public function __isset($name){
+    return isset($this->{$name});
+  }
+
+  /**
+   * Unsets the object variable
+   * @param string $name variable name
+   * @license https://opensource.org/licenses/mit-license.php MIT X11
+   * @access public
+   */
+  public function __unset($name){
+    unset($this->{$name});
+  }
+
+  /**
+   * Resets the object to its initial state
+   * @license https://opensource.org/licenses/mit-license.php MIT X11
+   * @access public
+   */
+  public function reset(){
+    $vars = get_object_vars($this);
+    foreach($vars as $key => $val){
+      if($key != 'table' && $key != 'schema')
+      $this->{$key} = null;
     }
   }
 
   /**
-   * Zwraca id obiektu
-   * @author Patryk Kurzeja <patrykkurzeja@proton.me>
-   * @return integer identyfikator obiektu
+   * Returns the object id
+   * @return integer object identifier
    * @license https://opensource.org/licenses/mit-license.php MIT X11
    * @access public
    */
-
   public function getId(){
     return $this->id;
   }
 
   /**
-   * Zapisuje zmiany obiektu w bazie
-   * @author Patryk Kurzeja <patrykkurzeja@proton.me>
-   * @return object zwraca obiekt modelu
+   * Saves the object changes to the database
+   * @return object returns the model object
    * @license https://opensource.org/licenses/mit-license.php MIT X11
    * @access public
    */
   public function save(){
 
     $vars = get_object_vars($this);
-    if($vars['id']){
+    if(isset($vars['id'])){
       $id = $vars['id'];
       $opr = 'update';
     }else{
@@ -116,8 +167,7 @@ class Model{
 
 
   /**
-   * Usuwa obiekt z bazy
-   * @author Patryk Kurzeja <patrykkurzeja@proton.me>
+   * Deletes the object from the database
    * @license https://opensource.org/licenses/mit-license.php MIT X11
    * @access public
    */
@@ -132,33 +182,32 @@ class Model{
   }
 
   /**
-   * Pobiera obiekt z bazy
-   * @author Patryk Kurzeja <patrykkurzeja@proton.me>
-   * @return object zwraca pobrany obiekt
+   * Retrieves the object from the database
+   * @return object returns the retrieved object
    * @license https://opensource.org/licenses/mit-license.php MIT X11
    * @access public
    */
   public function get(){
-    $id = $this->id;
     $table = static::$table;
-    if($id){
+    if(!is_null($this->id)){
+      $id = $this->id;
       $SQL = "SELECT * FROM ".$table." WHERE id = ? LIMIT 1";
       $params = Db::select($SQL, array($id), true);
-      foreach($params as $key => $val){
-        $this->{$key} = $val;
+      if(is_array($params)){
+        foreach($params as $key => $val){
+          $this->{$key} = $val;
+        }
       }
     }
     return $this;
   }
 
   /**
-   * Wyszukuje i pobiera obiekt z bazy
-   * @author Patryk Kurzeja <patrykkurzeja@proton.me>
-   * @return object zwraca pobrany obiekt
+   * Searches and retrieves the object from the database
+   * @return object returns the retrieved object
    * @license https://opensource.org/licenses/mit-license.php MIT X11
    * @access public
    */
-
   public function search(){
     $vars = get_object_vars($this);
     $table = static::$table;
@@ -168,14 +217,15 @@ class Model{
     $first = true;
 
     unset($vars['table']);
+    unset($vars['schema']);
     unset($vars['id']);
     
     foreach($vars as $key => $var){
-      if($var){
+      if($var != null){
         if(!$first){
-          $columns .= ", ";
+          $columns .= " AND ";
         }else{
-          $fisrt = false;
+          $first = false;
         }
 
         $columns .= $key . " = ?";
@@ -197,9 +247,17 @@ class Model{
     }
   }
 
-  public function getAll($where = array()){
+  /**
+   * Retrieves all objects from the database
+   * @param array $where search conditions
+   * @param string $order sorting order
+   * @return array returns an array of objects
+   * @license https://opensource.org/licenses/mit-license.php MIT X11
+   * @access public
+   */
+  public static function getAll($where = array(), $order = "id ASC"){
     $table = static::$table;
-    $className =  __CLASS__;
+    $className =  get_called_class();
     $data = array();
     $SQL = "SELECT * FROM ".$table;
 
@@ -216,6 +274,8 @@ class Model{
         $SQL .= $where_SQL;
       }
 
+      $SQL .= " ORDER BY ".$order;
+      
       $resp = Db::select($SQL, $data);
 
       if(is_array($resp)){
@@ -224,7 +284,9 @@ class Model{
           $Obj = new $className();
           $row = is_array($row) ? $row : array();
           foreach($row as $key => $val){
-            $Obj->{$key} = $val;
+            if(!is_numeric($key)){
+              $Obj->{$key} = $val;
+            }
           }
           $resp_data[$Obj->id] = $Obj;
         }
@@ -234,10 +296,16 @@ class Model{
       }
 
     }else{
-      throw new Exception("First parametr of function BlogPost->getAll must be array()!");
+      throw new Exception("First parameter of function Model->getAll must be array()!");
     }
   }
 
+  /**
+   * Creates a table in the database
+   * @return string returns the SQL query
+   * @license https://opensource.org/licenses/mit-license.php MIT X11
+   * @access public
+   */
   public static function createTable(){
     $SQL = "CREATE TABLE " . static::$table . " ( ";
     $coma = false;
@@ -251,7 +319,19 @@ class Model{
       $SQL .= $key . " " . $val;
     }
     $SQL .= " )";
-    Db::create($SQL);
-    return $SQL;
+    $result = Db::create($SQL);
+    return $result;
+  }
+
+  /**
+   * Drops a table from the database
+   * @return string returns the SQL query
+   * @license https://opensource.org/licenses/mit-license.php MIT X11
+   * @access public
+   */
+  public static function dropTable(){
+    $SQL = "DROP TABLE " . static::$table;
+    $result = Db::delete($SQL);
+    return $result;
   }
 }

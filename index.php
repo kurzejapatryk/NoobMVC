@@ -3,20 +3,8 @@
 |* Description | Plik inicjalizacyjny           *|
 |************************************************/
 
-// check PHP Version
-if(phpversion()<'7.2' ){
-  echo 'Your version of PHP is '.phpversion().'. Required min. 7.2';
-  exit;
-}
-
-// start session
-session_start();
-
-// load helpers functions
-require_once('helpers.php');
-
 //Autoload NoobMCV
-require_once('autoload.php');
+require_once __DIR__ .'/bootstrap.php';
 
 
 // set debuging raporting
@@ -28,10 +16,6 @@ if( CODE_DEBUG ) {
    error_reporting(0);
    ini_set('display_errors', 0);
 }
-
-// load vendors
-require_once('vendor/autoload.php');
-
 
 
 // Load console arguments
@@ -48,8 +32,6 @@ if(!isset($_SESSION['csrf'])){
 	$_SESSION['csrf'] = $csrf;
 }
 
-require_once('Language/' . LANGUAGE . '.php');
-
 // start
 if(!isset($_GET['page'])){
   $classname = "Controllers\\" . START_CONTROLLER;
@@ -59,13 +41,12 @@ if(!isset($_GET['page'])){
   $classname = 0;
   foreach ($dir as $check_dir){
     $check_dir = str_replace('.class.php','',$check_dir);
-    if($check_dir == $_GET['page']){
+    if($check_dir == ucwords($_GET['page']) && $_GET['page'] != 'Uploads'){
       $classname = $check_dir;
     }
   }
   if($classname !='0' ){
     if(!isset($_GET['action'])){
-      $classname =  START_CONTROLLER;
       $classname = "Controllers\\" . $classname;
       $classname::start();
     }else{

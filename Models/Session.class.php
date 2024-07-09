@@ -1,39 +1,76 @@
 <?php
-/************************************************|
-|* Author      | Patryk Kurzeja                 *|
-|* Date        | 13-01-2019                     *|
-|* email       | p.kurzeja@spheresystems.pl     *|
-|* Description | Model uzytkownika              *|
-|************************************************/
-
-
-namespace Plugins\Authentication\Models;
+namespace Models;
 
 use Core\Model;
 use Core\Db;
 
+/**
+ * Class Session
+ * User model
+ * @package Plugins\Authentication\Models
+ */
 class Session extends Model{
 
-  public $id;                //INTEGER AUTO_INCREMENT INIQUE PRIMARY_KEY
-
+  /**
+   * Table name
+   * @var string  
+   */
   protected static $table = 'sessions';
 
+  /**
+   * Table schema
+   * @var array
+   */
   protected static $schema = [
-    'id' => "INT PRIMARY KEY",
+    'id' => "INT PRIMARY KEY AUTO_INCREMENT",
     'session_id' => "VARCHAR(100) NOT NULL",
     'user_id' => "INT NOT NULL",
     'auth_key' => "VARCHAR(255) NOT NULL",
     'created_datetime' => "TIMESTAMP NOT NULL",
-    'email' => "VARCHAR(255) NOT NULL",
-    'expire_datetime' => "VARCHAR(255) NOT NULL",
+    'expire_datetime' => "INT",
   ];
 
+  /**
+   * Record ID
+   * @var int
+   */
+  public $id;
+
+  /**
+   * Session ID
+   * @var string
+   */
   public $session_id;
+
+  /**
+   * User ID
+   * @var int
+   */
   public $user_id;
+
+  /**
+   * Authorization key
+   * @var string
+   */
   public $auth_key;
+
+  /**
+   * Creation date and time
+   * @var string
+   */
   public $created_datetime;
+
+  /**
+   * Expiration date and time
+   * @var int
+   */
   public $expire_datetime;
 
+  /**
+   * Get session by ID
+   * @param int $id
+   * @return object
+   */
   public function getBySessionID($id){
     $table = self::$table;
     if($id){

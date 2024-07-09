@@ -1,0 +1,33 @@
+image: php:latest
+
+cache:
+  paths:
+    - vendor/
+
+before_script:
+  - apt-get update -yqq > /dev/null
+  - apt-get install -yqq git libpq-dev libcurl4-gnutls-dev libicu-dev libvpx-dev libjpeg-dev libpng-dev libxpm-dev zlib1g-dev libfreetype6-dev libxml2-dev libexpat1-dev libbz2-dev libgmp3-dev libldap2-dev unixodbc-dev libsqlite3-dev libaspell-dev libsnmp-dev libpcre3-dev libtidy-dev libonig-dev libzip-dev libsodium-dev >> /dev/null
+  # Install PHP extensions
+  - docker-php-ext-install mbstring pdo_pgsql pdo_mysql curl intl gd xml zip bz2 intl opcache sodium exif >> /dev/null
+  # Install & enable Xdebug for code coverage reports
+  - pecl install xdebug >> /dev/null
+  - docker-php-ext-enable xdebug >> /dev/null
+  # Install and run Composer
+  - curl -sS https://getcomposer.org/installer | php >> /dev/null
+  - php composer.phar install --prefer-dist --no-ansi --no-interaction --no-progress
+
+services:
+  - mysql:5.7
+  
+variables:
+  # Configure mysql environment variables (https://hub.docker.com/r/_/mysql/)
+  MYSQL_ROOT_PASSWORD: root
+  MYSQL_DATABASE: test_db
+  MYSQL_USER: db_user
+  MYSQL_PASSWORD: password123
+  DB_HOST: mysql
+
+test:app:
+  script:
+    - php noob.php -i --testdb
+    - vendor/bin/phpunit --configuration phpunit.xml

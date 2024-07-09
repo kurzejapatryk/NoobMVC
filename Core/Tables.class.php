@@ -1,15 +1,19 @@
 <?php
 /************************************************|
-|* Description | Obsługa tablic                 *|
+|* Description | Array handling                 *|
 |************************************************/
 
 namespace Core;
 
+/**
+ * Class Tables
+ * Array handling class
+ * @package Core
+ */
 class Tables{
   /**
-   * Sprawdza czy istnieje i zwraca wartość z tablicy POST
-   * @author Patryk Kurzeja <p.kurzeja#spheresystems.pl>
-   * @param string $key klucz tablicy
+   * Checks if a value exists in the POST array and returns it
+   * @param string $key array key
    * @license https://opensource.org/licenses/mit-license.php MIT X11
    * @access public
    */
@@ -20,9 +24,8 @@ class Tables{
   }
 
   /**
-   * Sprawdza czy istnieje i zwraca wartość z tablicy GET
-   * @author Patryk Kurzeja <p.kurzeja#spheresystems.pl>
-   * @param string $key klucz tablicy
+   * Checks if a value exists in the GET array and returns it
+   * @param string $key array key
    * @license https://opensource.org/licenses/mit-license.php MIT X11
    * @access public
    */
@@ -33,9 +36,8 @@ class Tables{
   }
 
   /**
-   * Sprawdza czy istnieje i zwraca wartość z tablicy COOKIES
-   * @author Patryk Kurzeja <p.kurzeja#spheresystems.pl>
-   * @param string $key klucz tablicy
+   * Checks if a value exists in the COOKIES array and returns it
+   * @param string $key array key
    * @license https://opensource.org/licenses/mit-license.php MIT X11
    * @access public
    */

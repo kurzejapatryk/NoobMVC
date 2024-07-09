@@ -1,6 +1,11 @@
 <?php
 namespace Core;
 
+/**
+ * Class ApiResponse
+ * API response class
+ * @package Core
+ */
 class ApiResponse{
 
     public $VERSION;
@@ -9,6 +14,11 @@ class ApiResponse{
 
     public $RESULT;
     
+    /**
+     * Object constructor
+     * @license https://opensource.org/licenses/mit-license.php MIT X11
+     * @access public
+     */
     function __construct(){
         $this->VERSION = API_VERSION;
         $this->RESULT = new \stdClass();
@@ -24,13 +34,15 @@ class ApiResponse{
     }
 
     /**
-     * Generuje odpowiedź JSON
+     * Generates JSON response
      * @author Patryk Kurzeja <patrykkurzeja@proton.me>
      * @license https://opensource.org/licenses/mit-license.php MIT X11
      * @access public
      */
-    public function getJSON(){
-        header('Content-Type: application/json');
+    public function getJSON($header = true){
+        if($header){
+            header('Content-Type: application/json');
+        }
         echo json_encode($this);
     }
 }

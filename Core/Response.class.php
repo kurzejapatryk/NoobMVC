@@ -1,6 +1,6 @@
 <?php
 /************************************************|
-|* Description | Klasa odpowiedzi               *|
+|* Description | Response class                  *|
 |************************************************/
 
 namespace Core;
@@ -8,14 +8,20 @@ namespace Core;
 use Smarty;
 
 use Core\Debuging;
+use Models\Setting;
 
+/**
+ * Response class
+ * Class for handling responses
+ * @package Core
+ */
 class Response{
 
   private $smrt;
   private $data;
 
   /**
-   * Konstruktor, wpisuje standardowe zmienne do pola data, ustawia smarty
+   * Constructor, sets default variables to the data field, initializes Smarty
    * @author Patryk Kurzeja <patrykkurzeja@proton.me>
    * @license https://opensource.org/licenses/mit-license.php MIT X11
    * @access public
@@ -24,8 +30,11 @@ class Response{
     $smarty = new Smarty();
     $this->data = array(
       'version' => VERSION,
+      'core_version' => CORE_VERSION,
+      'api_version' => API_VERSION,
       'language' => LANGUAGE,
       'url' => URL,
+      'settings' => Setting::getAll()
     );
     if(isset($_GET['page'])){
       if(isset($_GET['action'])){
@@ -46,10 +55,9 @@ class Response{
   }
 
   /**
-   * Dodaje zmienne do widoku
-   * @author Patryk Kurzeja <patrykkurzeja@proton.me>
-   * @param string $name Nazwa zmiennej w widoku
-   * @param string $value Wartość zmiennje w widoku
+   * Adds variables to the view template
+   * @param string $name Variable name in the view template
+   * @param string $value Variable value in the view template
    * @license https://opensource.org/licenses/mit-license.php MIT X11
    * @access public
    */
@@ -58,9 +66,16 @@ class Response{
   }
 
   /**
-   * Wyświetla widok
-   * @author Patryk Kurzeja <patrykkurzeja@proton.me>
-   * @param string $view plik widoku
+   * Returns the data array
+   * @return array
+   */
+  public function getData(){
+    return $this->data;
+  }
+
+  /**
+   * Displays the view template
+   * @param string $view View file
    * @license https://opensource.org/licenses/mit-license.php MIT X11
    * @access public
    */
@@ -76,10 +91,14 @@ class Response{
         $this->smrt->assign($key, $value);
       }
     }
-
     $this->smrt->display(PATH . 'Views/' . $view);
   }
 
+  /**
+   * Returns the view template as an HTML string
+   * @param string $view View file
+   * @return string HTML
+   */
   public function getPage($view){
     $this->assign('lang', LANG);
     if(SQL_DEBUG){
@@ -97,17 +116,26 @@ class Response{
   }
 
   /**
-   * Generuje odpowiedź JSON
-   * @author Patryk Kurzeja <patrykkurzeja@proton.me>
+   * Generates a JSON response
+   * @param bool $get Whether to return the JSON string or echo it
    * @license https://opensource.org/licenses/mit-license.php MIT X11
    * @access public
    */
-  public function getJSON(){
-    header('Content-Type: application/json');
-    echo json_encode($this->data);
+  public function getJSON($get = false){
+    if(SQL_DEBUG){
+      $this->data['SQL_DEBUG_ARRAY'] = $GLOBALS['SQL_DEBUG_ARRAY'];
+    }
+    
+    if($get){
+      return json_encode($this->data);
+    }else{
+      header('Content-Type: application/json');
+      echo json_encode($this->data);
+    }
+
   }
 
-  public function redirect($location){
+  public static function redirect($location){
     header('Location: '.$location);
   }
 

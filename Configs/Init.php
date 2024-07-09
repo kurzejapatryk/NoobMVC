@@ -1,8 +1,8 @@
 <?php
 /************************************************|
-|* Description | Konfiguracja klasy startowej   *|
+|* Description | Configuration of the starting class *|
 |************************************************/
 
 /* Init */
 
-define('START_CONTROLLER', 'Home'); // Kontroler startowy
+define('START_CONTROLLER', 'Home'); // Starting controller

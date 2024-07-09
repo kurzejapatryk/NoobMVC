@@ -1,14 +1,41 @@
 <?php
 /************************************************|
-|* Description | Konfiguracja bazydanych        *|
+|* Description | Database Configuration          *|
 |************************************************/
 
-define('DB_type', 'MySQL');                  // Tymczasowowo tylko MySQL, integracja innych baz później.
+define('DB_type', 'MySQL');                     // Temporary only MySQL, integration of other databases later.
 
-/* MySQL Config */
-define('DB_HOST', 'localhost');              // Host bazy danych
-define('DB_PORT', '3306');                   // Port bazy danych
-define('DB_USER', 'root');                   // Nazwa użytkownika bazy danych
-define('DB_PASSWORD', '');                   // Hasło bazy danych
-define('DB_DATABASE', 'database_name');      // Nazwa bazy danych
-define('DB_DATETIME_FORMAT', 'Y-m-d H:i:s');
+$DB_CONF = [
+    'HOST' => 'localhost',                      // Database host
+    'PORT' => '3306',                           // Database port
+    'USER' => 'db_user',                        // Database username
+    'PASSWORD' => 'password123',                // Database password
+    'DATABASE' => 'test_db',                    // Database name
+    'DATETIME_FORMAT' => 'Y-m-d H:i:s'          // Date format in the database
+];
+
+
+/* Do not change anything below this line
+*************************************************
+*/
+
+// Test database
+if(isset($_SERVER['CI']) || isset($_SERVER["DOCKER"]) || isset($_SERVER['SERVER_ADDR']) && str_contains($_SERVER['SERVER_ADDR'], '172.') ||isset($GLOBALS['DB_TEST'])){
+    $DB_CONF = [
+        'HOST' => 'mysql',
+        'PORT' => '3306',            
+        'USER' => 'db_user',            
+        'PASSWORD' => 'password123',      
+        'DATABASE' => 'test_db',           
+        'DATETIME_FORMAT' => 'Y-m-d H:i:s'   
+    ];
+}
+
+define('DB_HOST', $DB_CONF['HOST']);                    
+define('DB_PORT', $DB_CONF['PORT']);                    
+define('DB_USER', $DB_CONF['USER']);                    
+define('DB_PASSWORD', $DB_CONF['PASSWORD']);            
+define('DB_DATABASE', $DB_CONF['DATABASE']);            
+define('DB_DATETIME_FORMAT', $DB_CONF['DATETIME_FORMAT']);
+
+unset($DB_CONF);

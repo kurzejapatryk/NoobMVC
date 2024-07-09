@@ -1,3 +1,4 @@
 tmp
-tmp/
-tmp/*
+vendor
+Uploads
+.phpunit.result.cache

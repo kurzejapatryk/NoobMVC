@@ -1,13 +1,13 @@
 <?php
 /************************************************|
-|* Description | Konfiguracja debugowania kodu  *|
+|* Description | Code debugging configuration   *|
 |************************************************/
 
-/* Error raporting */
-define('CODE_DEBUG', true);     // Raportowanie błędów kodu
-define('SQL_DEBUG', false);      // Raportowanie błędów bazy danych
+/* Error reporting */
+define('CODE_DEBUG', true);      // Code error reporting
+define('SQL_DEBUG', true);      // Database error reporting
 
 
 
-/* Global Vars for debuging -> Do not change this section */
+/* Global Vars for debugging -> Do not change this section */
 $SQL_DEBUG_ARRAY = array();

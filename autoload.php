@@ -1,6 +1,4 @@
-
 <?php
-
     // load configs
     $conf_dir = "Configs/";
     $dir = scandir($conf_dir);
