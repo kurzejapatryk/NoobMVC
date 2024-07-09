@@ -11,7 +11,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Build the Docker image
-      run: docker compose up -d --build
+      run: docker compose up --build
 
     - name: Sleep for 15 seconds when container is up
       run: sleep 15
