@@ -8,7 +8,7 @@ on:
 
 jobs:
 
-  build:
+  tests:
 
     runs-on: ubuntu-latest
 
@@ -19,8 +19,6 @@ jobs:
 
     - name: load database
       run: docker exec -i apache-noobMVC php ./noob.php -itest123test --testdb
-
-   
 
     - name: unit test
       run: docker exec  apache-noobMVC  ./vendor/bin/phpunit --configuration phpunit.xml
