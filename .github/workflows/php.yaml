@@ -41,14 +41,6 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y libpq-dev libcurl4-gnutls-dev libicu-dev libvpx-dev libjpeg-dev libpng-dev libxpm-dev zlib1g-dev libfreetype6-dev libxml2-dev libexpat1-dev libbz2-dev libgmp3-dev libldap2-dev unixodbc-dev libsqlite3-dev libaspell-dev libsnmp-dev libpcre3-dev libtidy-dev libonig-dev libzip-dev libsodium-dev
-        sudo apt-get install -y php-dev
-        sudo apt-get install -y php-pear
-        sudo apt-get install -y php-pear
-        sudo pecl channel-update pecl.php.net
-        sudo pecl upgrade pecl
-        sudo pecl install xdebug
-        sudo docker-php-ext-install mbstring pdo_pgsql pdo_mysql curl intl gd xml zip bz2 intl opcache sodium exif
-        sudo docker-php-ext-enable xdebug
 
     - name: Install Composer
       run: |
