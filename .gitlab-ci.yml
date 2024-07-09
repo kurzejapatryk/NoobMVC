@@ -21,10 +21,8 @@ services:
   
 variables:
   # Configure mysql environment variables (https://hub.docker.com/r/_/mysql/)
-  MYSQL_ROOT_PASSWORD: root
+  MYSQL_ALLOW_EMPTY_PASSWORD: yes
   MYSQL_DATABASE: test_db
-  MYSQL_USER: db_user
-  MYSQL_PASSWORD: password123
   DB_HOST: mysql
 
 test:app:

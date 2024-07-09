@@ -8,8 +8,8 @@ define('DB_type', 'MySQL');                     // Temporary only MySQL, integra
 $DB_CONF = [
     'HOST' => '127.0.0.1',                      // Database host
     'PORT' => '3306',                           // Database port
-    'USER' => 'db_user',                        // Database username
-    'PASSWORD' => 'password123',                // Database password
+    'USER' => 'root',                        // Database username
+    'PASSWORD' => '',                // Database password
     'DATABASE' => 'test_db',                    // Database name
     'DATETIME_FORMAT' => 'Y-m-d H:i:s'          // Date format in the database
 ];
