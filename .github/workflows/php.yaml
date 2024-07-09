@@ -18,7 +18,7 @@ jobs:
       run: docker compose up -d --build
 
     - name: load database
-      run: docker exec -i apache-noobMVC php ./noob.php -i --testdb
+      run: docker exec -i apache-noobMVC php ./noob.php -itest123test --testdb
 
    
 
