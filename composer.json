@@ -2,16 +2,15 @@
     "name": "kurzejapatryk/noobmvc",
     "description": "Simple and tiny MVC framework for beginers PHP programers.",
     "keywords": ["php","framework","noobmvc"],
-    "homepage": "https://noobmvc.patrykkurzeja.pl",
-    "version": "1.0.0",
+    "homepage": "https://https://github.com/kurzejapatryk/NoobMVC",
     "license": "MIT",
     "type": "project",
     "authors": [
         {
             "name": "Patryk Kurzeja`",
-            "homepage": "https://patrykkurzeja.pl",
+            "homepage": "https://github.com/kurzejapatryk/",
             "role": "Author",
-            "email": "patrykkurzeja@proton.me"
+            "email": "patryk.kurzeja@kmpk.eu"
         }
     ],
     "require": {
