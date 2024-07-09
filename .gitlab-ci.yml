@@ -29,5 +29,5 @@ variables:
 
 test:app:
   script:
-    - php noob.php -i --testdb
+    - php noob.php -i
     - vendor/bin/phpunit --configuration phpunit.xml
