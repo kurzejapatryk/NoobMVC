@@ -13,8 +13,11 @@ jobs:
     - name: Build the Docker image
       run: docker compose up -d --build
 
-    - name: load database
+    - name: Sleep for 15 seconds when container is up
+      run: sleep 15
+
+    - name: Load database
       run: docker exec -i apache-noobMVC php ./noob.php -itest123test --testdb
 
-    - name: unit test
+    - name: Unit test
       run: docker exec  apache-noobMVC  ./vendor/bin/phpunit --configuration phpunit.xml
