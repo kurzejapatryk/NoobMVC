@@ -63,5 +63,5 @@ jobs:
 
     - name: Run tests
       run: |
-        php noob.php -itest123 --testdb
+        php noob.php -i
         vendor/bin/phpunit --configuration phpunit.xml
