@@ -20,7 +20,7 @@ $DB_CONF = [
 */
 
 // Test database
-if(isset($_SERVER['CI']) || isset($_SERVER["DOCKER"]) || isset($_SERVER['SERVER_ADDR']) && str_contains($_SERVER['SERVER_ADDR'], '172.') ||isset($GLOBALS['DB_TEST'])){
+if(isset($_SERVER['CI']) || isset($_SERVER["DOCKER"]) || isset($_SERVER['SERVER_ADDR']) && str_contains($_SERVER['SERVER_ADDR'], '172.') ||isset($GLOBALS['DB_TEST']) || getenv('DB_TEST') == 'true'){
     $DB_CONF = [
         'HOST' => 'mysql',
         'PORT' => '3306',            
