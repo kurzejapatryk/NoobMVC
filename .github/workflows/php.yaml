@@ -9,9 +9,22 @@ permissions:
   contents: read
 
 jobs:
-  build:
+  tests:
 
     runs-on: ubuntu-latest
+  
+  services:
+    mysql:
+      image: mysql:5.7
+      env:
+        MYSQL_ROOT_PASSWORD: root
+        MYSQL_DATABASE: test_db
+        MYSQL_USER: db_user
+        MYSQL_PASSWORD: password123
+        DB_HOST: mysql
+      ports:
+        - 3307:3306
+      options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
     - name: Checkout code
@@ -44,19 +57,6 @@ jobs:
 
     - name: Install Composer dependencies
       run: composer install
-
-    - name: Prepare database
-      uses: mirromutth/mysql-action@v1.1
-      with:
-        host port: 3306
-        container port: 3307
-        character set server: 'utf8'
-        collation server: 'utf8_general_ci'
-        mysql version: '5.7'
-        mysql database: 'test_db'
-        mysql root password: 'root'
-        mysql user: 'db_user'
-        mysql password: 'password123'
 
     - name: Run tests
       run: |
