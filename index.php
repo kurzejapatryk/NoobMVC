@@ -2,7 +2,6 @@
 /************************************************|
 |* Description | Plik inicjalizacyjny           *|
 |************************************************/
-print_r($_SERVER);
 //Autoload NoobMCV
 require_once __DIR__ .'/bootstrap.php';
 

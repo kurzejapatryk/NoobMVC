@@ -57,6 +57,9 @@ jobs:
 
     - name: Install Composer dependencies
       run: composer install
+    
+    - name: Wait for MySQL to initialize
+      run: sleep 15 # Adding a delay
 
     - name: Run tests
       run: |
