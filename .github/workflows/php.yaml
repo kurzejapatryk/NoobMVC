@@ -1,64 +1,26 @@
-name: PHP Composer
+name:  CI Pipeline
+
 on:
   push:
-    branches: [ "master" ]
+    branches: [ main ]
   pull_request:
-    branches: [ "master" ]
-
-permissions:
-  contents: read
+    branches: [ main ]
 
 jobs:
-  tests:
+
+  build:
 
     runs-on: ubuntu-latest
-  
-    services:
-      mysql:
-        image: mysql:5.7
-        env:
-          MYSQL_ROOT_PASSWORD: password
-          MYSQL_DATABASE: test_db
-          MYSQL_USER: db_user
-          MYSQL_PASSWORD: password123
-          DB_HOST: mysql
-        ports:
-          - 3306:3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+    - uses: actions/checkout@v2
+    - name: Build the Docker image
+      run: docker compose up -d --build
 
-    - name: Validate composer.json and composer.lock
-      run: composer validate --strict
+    - name: load database
+      run: docker exec -i apache-noobMVC php ./noob.php -i --testdb
 
-    - name: Cache Composer packages
-      id: composer-cache
-      uses: actions/cache@v3
-      with:
-        path: vendor
-        key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-php-
+   
 
-    - name: Install dependencies
-      run: composer install --prefer-dist --no-progress
-
-    - name: Set up PHP
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: '8.2'
-
-    - name: Install extensions
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y libpq-dev libcurl4-gnutls-dev libicu-dev libvpx-dev libjpeg-dev libpng-dev libxpm-dev zlib1g-dev libfreetype6-dev libxml2-dev libexpat1-dev libbz2-dev libgmp3-dev libldap2-dev unixodbc-dev libsqlite3-dev libaspell-dev libsnmp-dev libpcre3-dev libtidy-dev libonig-dev libzip-dev libsodium-dev
-
-    - name: Install Composer dependencies
-      run: composer install
-
-    - name: Run tests
-      run: |
-        php noob.php -i
-
+    - name: unit test
+      run: docker exec  apache-noobMVC  ./vendor/bin/phpunit --configuration phpunit.xml
