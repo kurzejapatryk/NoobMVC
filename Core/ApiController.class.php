@@ -6,7 +6,7 @@ namespace Core;
  * API response class
  * @package Core
  */
-class ApiControler{
+class ApiController{
 
     public $VERSION;
     public $ERROR = false;

@@ -1,13 +1,13 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use Core\ApiResponse;
+use Core\ApiController;
 
-class ApiResponseTest extends TestCase
+class ApiControllerTest extends TestCase
 {
     public function testSetError()
     {
-        $response = new ApiResponse();
+        $response = new ApiController();
         $response->set('ERROR', true);
 
         $this->assertTrue($response->ERROR);
@@ -15,7 +15,7 @@ class ApiResponseTest extends TestCase
 
     public function testSetMessage()
     {
-        $response = new ApiResponse();
+        $response = new ApiController();
         $response->set('MSG', 'Error occurred');
 
         $this->assertEquals('Error occurred', $response->MSG);
@@ -23,7 +23,7 @@ class ApiResponseTest extends TestCase
 
     public function testSetResult()
     {
-        $response = new ApiResponse();
+        $response = new ApiController();
         $response->set('result', ['key' => 'value']);
 
         $this->assertEquals(['key' => 'value'], $response->RESULT->result);
@@ -31,7 +31,7 @@ class ApiResponseTest extends TestCase
 
     public function testGetJSON()
     {
-        $response = new ApiResponse();
+        $response = new ApiController();
         $response->set('ERROR', true)
                  ->set('MSG', 'Error occurred')
                  ->set('result', ['key' => 'value']);

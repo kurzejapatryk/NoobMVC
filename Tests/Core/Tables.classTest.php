@@ -22,7 +22,7 @@ class TablesTest extends TestCase
 
     public function testCOOKIESWithNonExistingKey()
     {
-        $result = Tables::COOKIES('non_existing_key');
+        $result = Tables::COOKIE('non_existing_key');
         $this->assertNull($result);
     }
 }

@@ -25,7 +25,7 @@ class ModelTest extends TestCase
     public function testCreateTable()
     {
         TestModel::createTable();
-        $this->assertTrue(Db::tableExists('tests'));
+        $this->assertTrue(Db::tableIsExists('tests'));
     }
 
     public function test__construct()
@@ -113,7 +113,7 @@ class ModelTest extends TestCase
         $model->value = 'value';
         $model->save();
 
-        $model->del();
+        $model->delete();
 
         $model = new TestModel($model->id);
         $this->assertNull($model->name);
@@ -140,7 +140,7 @@ class ModelTest extends TestCase
         $model = new TestModel();
         $model->name = 'name2';
 
-        $model->search();
+        $model->find();
 
         $this->assertEquals('name2', $model->name);
         $this->assertEquals('value2', $model->value);
@@ -150,7 +150,7 @@ class ModelTest extends TestCase
     {
         $model = new TestModel();
         $model->dropTable();
-        $this->assertFalse(Db::tableExists('test'));
+        $this->assertFalse(Db::tableIsExists('test'));
     }
 
     public function testgetAll()
