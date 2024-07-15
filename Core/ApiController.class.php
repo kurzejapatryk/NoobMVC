@@ -58,9 +58,6 @@ class ApiController{
      */
     public function display(bool $header = true) : void
     {
-        if($this->ERROR){
-            http_response_code(500);
-        }
         if($header){
             header('Content-Type: application/json');
         }
