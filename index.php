@@ -2,9 +2,15 @@
 /************************************************|
 |* Description | Plik inicjalizacyjny           *|
 |************************************************/
+
 //Autoload NoobMCV
 require_once __DIR__ .'/bootstrap.php';
 
+// start session
+if(!session_start()){
+  echo 'Session start error!';
+  exit;
+}
 
 // set debuging raporting
 

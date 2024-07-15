@@ -27,7 +27,7 @@
             <a href="https://tenor.com/view/success-gif-23007548">Success GIF</a>from <a href="https://tenor.com/search/success-gifs">Success GIFs</a>
         </div>
         <p>This is the default view for the Hello controller. You can find it in the Views/Hello.tpl file.</p>
-        <p>For more information on how to use NoobMVC, please visit the <a href="https://github.com/kurzejapatryk/NoobMVC/wikim">NoobMVC website on Github</a>.</p>
+        <p>For more information on how to use NoobMVC, please visit the <a href="https://github.com/kurzejapatryk/NoobMVC/wiki">NoobMVC website on Github</a>.</p>
         <p>Now, go ahead and create your own controllers and views!</p>
     </div>
 
