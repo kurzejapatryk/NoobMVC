@@ -1,8 +1,4 @@
 <?php
-/************************************************|
-|* Description | Authentication class            *|
-|************************************************/
-
 namespace Core;
 
 use Core\Mailer;
@@ -25,9 +21,10 @@ class Authentication{
      * If yes, sets the user object
      * If not, creates a new user object
      * If the session has expired, restarts the session
-     * @param Bool $renew - whether to renew the session (default true)
+     * @param bool $renew - whether to renew the session (default true)
      */
-    public function __construct($renew = true){
+    public function __construct(bool $renew = true)
+    {
         if(isset($_SESSION['AUTH_KEY'])){
             $Session = new Session();
             $Session->getBySessionID(session_id());
@@ -59,7 +56,8 @@ class Authentication{
      * Function to restart the session
      * @return void
      */
-    private function restart_session(){
+    private function restart_session() : void
+    {
         session_regenerate_id(true);
         $this->User = new User();
         $this->active_user = false;
@@ -67,13 +65,15 @@ class Authentication{
 
     /**
      * Function to generate an authentication key
+     * @param int $length - length of the authentication key (default 128)
      * @return string - authentication key
      */
-    private function gen_auth_key(){
+    private function gen_auth_key(int $length = 128) : string
+    {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $charactersLength = strlen($characters);
         $randomString = '';
-        for ($i = 0; $i < 128; $i++) {
+        for ($i = 0; $i < $length; $i++) {
             $randomString .= $characters[rand(0, $charactersLength - 1)];
         }
         return $randomString.md5(time());
@@ -83,7 +83,8 @@ class Authentication{
      * Function to check if the user is logged in
      * @return bool - whether the user is logged in
      */
-    public function is_log_in(){
+    public function is_log_in() : bool
+    {
         return $this->active_user;
     }
 
@@ -91,7 +92,8 @@ class Authentication{
      * Function to check if the user is logged in as an administrator
      * @return bool - whether the user is logged in as an administrator
      */
-    public function is_admin_log_in(){
+    public function is_admin_log_in() : bool
+    {
         return( $this->active_user && $this->User->role == 1);
     }
 
@@ -99,7 +101,8 @@ class Authentication{
      * Function to get the user object
      * @return object - user object
      */
-    public function get_user(){
+    public function get_user() : User
+    {
         return $this->User;
     }
 
@@ -107,7 +110,8 @@ class Authentication{
      * Function to log out the user
      * @return void
      */
-    public function log_out(){
+    public function log_out() : void
+    {
         $Session = new Session();
         $Session->getBySessionID(session_id());
         $Session->expire_datetime = 0;
@@ -122,7 +126,8 @@ class Authentication{
      * @param bool $admin - whether the user is an administrator (default false)
      * @return bool - whether the login was successful
      */
-    public function log_in($user_name, $password, $admin = false){
+    public function log_in(string $user_name, string $password, bool $admin = false) : bool
+    {
         $User = new User();
         $User->getByUserName($user_name);
         if($User->getPassword() == md5($password . SALT) && !$admin || $User->role){
@@ -145,14 +150,16 @@ class Authentication{
 
     /**
      * Function to generate a user password
+     * @param int $lenght - password length (default 12)
      * @return string - user password
      * @access public
      */
-    public function genPassword(){
+    public function genPassword(int $lenght = 12) : string
+    {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ?!@#$%^&*()_+{}|:<>?~[]\;,./-=`';
         $charactersLength = strlen($characters);
         $randomString = '';
-        for ($i = 0; $i < 8; $i++) {
+        for ($i = 0; $i < $lenght; $i++) {
             $randomString .= $characters[rand(0, $charactersLength - 1)];
         }
         return $randomString;
@@ -160,15 +167,17 @@ class Authentication{
 
     /**
      * Function to generate a 6-digit reset code
+     * @param int $lenght - reset code length (default 6)
      * @return string - reset code
      * @access public
      * @static
      */
-    public static function genResetCode(){
+    public static function genResetCode(int $lenght = 6) : string
+    {
         $characters = '0123456789';
         $charactersLength = strlen($characters);
         $randomString = '';
-        for ($i = 0; $i < 6; $i++) {
+        for ($i = 0; $i < $lenght; $i++) {
             $randomString .= $characters[rand(0, $charactersLength - 1)];
         }
         return $randomString;
@@ -181,7 +190,8 @@ class Authentication{
      * @return bool - whether the password reset was successful
      * @access public
      */
-    public function resetPassword($User){
+    public function resetPassword(User $User) : bool
+    {
         if($User->id){
             $code = $this->genResetCode();
 
