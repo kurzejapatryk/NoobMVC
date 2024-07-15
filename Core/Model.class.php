@@ -171,7 +171,7 @@ class Model{
    * @license https://opensource.org/licenses/mit-license.php MIT X11
    * @access public
    */
-  public function del(){
+  public function delete(){
     $vars = get_object_vars($this);
     $id = $vars['id'];
     $table = static::$table;
@@ -208,7 +208,7 @@ class Model{
    * @license https://opensource.org/licenses/mit-license.php MIT X11
    * @access public
    */
-  public function search(){
+  public function find(){
     $vars = get_object_vars($this);
     $table = static::$table;
 

@@ -7,6 +7,7 @@ namespace Core;
 
 use \PDO;
 use \PDOException;
+use PDOStatement;
 
 /**
  * Class Db
@@ -20,31 +21,34 @@ class Db{
    * @return object PDO database connection
    * @access public
    */
-  public static function connect(){
-    $con = null;
+  public static function connect() : PDO
+  {
+    $PDO = null;
     try{
-      $con = new PDO('mysql:host='.DB_HOST.';dbname='.DB_DATABASE, DB_USER, DB_PASSWORD);
-      $con->exec("SET CHARACTER SET utf8");
+      $PDO = new PDO('mysql:host='.DB_HOST.';dbname='.DB_DATABASE, DB_USER, DB_PASSWORD);
+      $PDO->exec("SET CHARACTER SET utf8");
     }catch (PDOException $e) {
       define('SQL_ERROR', $e);
     }
-    return $con;
+    return $PDO;
   }
 
   /**
    * Retrieves records from the database
    * @param string $query Query
    * @param mixed[] $var SQL query variables
-   * @return string[] Result of the PDOStatement query
+   * @param bool $assoc Whether to return an associative array
+   * @return PDOStatement|array|null Records
    * @access public
    */
-  public static function select($query, $var = array(), $assoc = false){
-    $con = Db::connect();
+  public static function select(string $query, array $var = array(), bool $assoc = false) : PDOStatement|array|null
+  {
+    $PDO = Db::connect();
     $result = NULL;
     try{
-      $qr = $con->prepare($query);
+      $qr = $PDO->prepare($query);
       if(!$qr){
-         $error = $con->errorInfo();
+         $error = $PDO->errorInfo();
       }else{
         $i=1;
         foreach($var as $value){
@@ -66,9 +70,9 @@ class Db{
         $GLOBALS['SQL_DEBUG_ARRAY'][] = array('SQL' => $query, 'vars' => $var, 'error' => $error[2], 'result' => $result);
       }
     }catch (PDOException $e){
-      $con = null;
+      $PDO = null;
     }
-    $con = null;
+    $PDO = null;
     return $result;
   }
 
@@ -76,16 +80,17 @@ class Db{
    * Deletes records from the database
    * @param string $query Query
    * @param mixed[] $var SQL query variables
-   * @return integer Number of deleted records
+   * @return bool|int Number of deleted records
    * @access public
    */
-  public static function delete($query,$var = array()){
-      $con = Db::connect();
+  public static function delete(string $query, array $var = array()) : int|null
+  {
+      $PDO = Db::connect();
       $result=0;
       try{
-         $qr = $con->prepare($query);
+         $qr = $PDO->prepare($query);
          if(!$qr){
-           $error = $con->errorInfo();
+           $error = $PDO->errorInfo();
          }else{
            $i=1;
            foreach($var as $value){
@@ -102,9 +107,9 @@ class Db{
            $qr->closeCursor();
          }
       }catch(PDOException $e) {
-        $con = null;
+        $PDO = null;
     }
-    $con = null;
+    $PDO = null;
     return $result;
   }
 
@@ -113,10 +118,11 @@ class Db{
    * Adds a record to the database
    * @param string $query Query
    * @param mixed[] $var SQL query variables
-   * @return int Id of the new record
+   * @return bool|string|null Last inserted ID
    * @access public
    */
-  public static function insert($query,$var = array()){
+  public static function insert(string $query, array $var = array()) : bool|string|null
+  {
     $last_id = NULL;
     try{
        $PDO = Db::connect();
@@ -146,9 +152,9 @@ class Db{
 
     }catch (PDOException $e){
       $GLOBALS['SQL_DEBUG_ARRAY'][] = array('SQL' => $query, 'vars' => $var, 'error' => $e->getMessage());
-      $con = null;
+      $PDO = null;
     }
-    $con = null;
+    $PDO = null;
     return $last_id;
   }
 
@@ -156,16 +162,17 @@ class Db{
    * Updates records in the database
    * @param string $query Query
    * @param mixed[] $var SQL query variables
-   * @return int Number of modified elements
+   * @return bool Whether the update was successful
    * @access public
    */
-  public static function update($query,$var = array()){
-    $con = Db::connect();
+  public static function update(string $query, array $var = array()) : bool
+  {
+    $PDO = Db::connect();
     $result=0;
     try{
-        $qr = $con->prepare($query);
+        $qr = $PDO->prepare($query);
         if(!$qr){
-          $error = $con->errorInfo();
+          $error = $PDO->errorInfo();
         }else{
           $i=1;
           foreach($var as $value){
@@ -182,18 +189,19 @@ class Db{
           $qr->closeCursor();
         }
     }catch (PDOException $e){
-      $con = null;
+      $PDO = null;
     }
-    $con = null;
+    $PDO = null;
     return $result;
   }
 
   /**
    * Creates records in the database
    * @param string $query Query
-   * @return void
+   * @return bool Whether the creation was successful
    */
-  public static function create($query){
+  public static function create(string $query) : bool
+  {
     $resp = false;
     try{
         $PDO = Db::connect();
@@ -213,9 +221,9 @@ class Db{
         $GLOBALS['SQL_DEBUG_ARRAY'][] = array('SQL' => $query, 'vars' => array(), 'error' => $error[2]);
 
     }catch (PDOException $e){
-      $con = null;
+      $PDO = null;
     }
-    $con = null;
+    $PDO = null;
     return $resp;
   }
 
@@ -225,10 +233,11 @@ class Db{
    * @return bool
    * @access public
    */
-  public static function tableExists($table){
-    $con = Db::connect();
-    $result = $con->query("SHOW TABLES LIKE '".$table."'");
-    $con = null;
+  public static function tableIsExists(string $table) : bool
+  {
+    $PDO = Db::connect();
+    $result = $PDO->query("SHOW TABLES LIKE '".$table."'");
+    $PDO = null;
     if($result->rowCount() > 0){
       return true;
     }else{
