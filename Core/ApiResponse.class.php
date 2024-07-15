@@ -16,7 +16,6 @@ class ApiResponse{
     
     /**
      * Object constructor
-     * @license https://opensource.org/licenses/mit-license.php MIT X11
      * @access public
      */
     function __construct(){
@@ -24,7 +23,15 @@ class ApiResponse{
         $this->RESULT = new \stdClass();
     }
 
-    public function set($name, $value){
+    /**
+     * Sets the response value
+     * @param string $name Value name
+     * @param mixed $value Value
+     * @return ApiResponse
+     * @access public
+     */
+    public function set(string $name, $value) : self
+    {
         if($name == "ERROR" || $name == "MSG"){
             $this->{$name} = $value;
         }else{
@@ -35,14 +42,29 @@ class ApiResponse{
 
     /**
      * Generates JSON response
-     * @author Patryk Kurzeja <patrykkurzeja@proton.me>
-     * @license https://opensource.org/licenses/mit-license.php MIT X11
+     * @return string|false JSON response
      * @access public
      */
-    public function getJSON($header = true){
+    public function getJSON() : string|false
+    {
+        return json_encode($this);
+    }
+
+    /**
+     * Display JSON response
+     * @param bool $header Whether to set JSON header
+     * @return void
+     * @access public
+     */
+    public function display(bool $header = true) : void
+    {
+        if($this->ERROR){
+            http_response_code(500);
+        }
         if($header){
             header('Content-Type: application/json');
         }
-        echo json_encode($this);
+        echo $this->getJSON();
     }
+
 }
