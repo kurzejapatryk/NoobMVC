@@ -17,7 +17,8 @@ use Models\File;
  */
 class FileManager{
 
-    public static function start(){
+    public static function start() : void
+    {
         \EdSDK\FlmngrServer\FlmngrServer::flmngrRequest(
             array(
                 'dirFiles' => UPLOADS_DIR,

@@ -69,9 +69,10 @@ class Session extends Model{
   /**
    * Get session by ID
    * @param int $id
-   * @return object
+   * @return self
    */
-  public function getBySessionID($id){
+  public function getBySessionID(int $id) : Session
+  {
     $table = self::$table;
     if($id){
       $SQL = "SELECT * FROM ".$table." WHERE session_id = ? LIMIT 1";

@@ -64,11 +64,13 @@ class Setting extends Model{
 
   /**
    * Saves default settings to the database
+   * @param bool $echo If true, the function will output the result
    * @return void
    * @access public
    * @static
    */
-  public static function createDefaultSettings($echo = true){
+  public static function createDefaultSettings(bool $echo = true) : void
+  {
     if($echo) echo "\n\n";
     foreach(self::$default as $name => $value){
       if(self::getValueByName($name) !== null){
@@ -91,10 +93,11 @@ class Setting extends Model{
    * @access public
    * @static
    */
-  public static function getValueByName($name){
+  public static function getValueByName(string $name) : string
+  {
     $Setting = new Setting();
     $Setting->name = $name;
-    $Setting->search();
+    $Setting->find();
     return $Setting->value;
   }
 
@@ -106,10 +109,11 @@ class Setting extends Model{
    * @access public
    * @static
    */
-  public static function setValueByName($name, $value){
+  public static function setValueByName(string $name, string $value) : void
+  {
     $Setting = new Setting();
     $Setting->name = $name;
-    $Setting->search();
+    $Setting->find();
     $Setting->value = $value;
     $Setting->save();
   }
@@ -120,7 +124,8 @@ class Setting extends Model{
    * @access public
    * @static
    */
-  public static function loadAll(){
+  public static function loadAll() : array
+  {
     $settings = [];
     foreach(Setting::getAll() as $setting){
       $settings[$setting->name] = $setting->value;

@@ -1,8 +1,4 @@
 <?php
-/************************************************|
-|* Description | Response class                  *|
-|************************************************/
-
 namespace Core;
 
 use Smarty;
@@ -22,8 +18,6 @@ class Response{
 
   /**
    * Constructor, sets default variables to the data field, initializes Smarty
-   * @author Patryk Kurzeja <patrykkurzeja@proton.me>
-   * @license https://opensource.org/licenses/mit-license.php MIT X11
    * @access public
    */
   public function __construct(){
@@ -32,7 +26,8 @@ class Response{
       'version' => VERSION,
       'core_version' => CORE_VERSION,
       'api_version' => API_VERSION,
-      'language' => LANGUAGE,
+      'lang_code' => LANGUAGE,
+      'language' => LANG,
       'url' => URL,
       'settings' => Setting::getAll()
     );
@@ -58,10 +53,10 @@ class Response{
    * Adds variables to the view template
    * @param string $name Variable name in the view template
    * @param string $value Variable value in the view template
-   * @license https://opensource.org/licenses/mit-license.php MIT X11
    * @access public
    */
-  public function assign($name, $value){
+  public function assign(string $name, string $value) : void
+  {
     $this->data[$name] = $value;
   }
 
@@ -69,18 +64,18 @@ class Response{
    * Returns the data array
    * @return array
    */
-  public function getData(){
+  public function getData() : array
+  {
     return $this->data;
   }
 
   /**
    * Displays the view template
    * @param string $view View file
-   * @license https://opensource.org/licenses/mit-license.php MIT X11
    * @access public
    */
-  public function displayPage($view){
-    $this->assign('lang', LANG);
+  public function displayPage(string $view) : void
+  {
     if(SQL_DEBUG){
       $this->data['SQL_DEBUG_HTML'] = Debuging::getSQLDebugHTML();
     }else{
@@ -99,8 +94,8 @@ class Response{
    * @param string $view View file
    * @return string HTML
    */
-  public function getPage($view){
-    $this->assign('lang', LANG);
+  public function getPage(string $view) : string
+  {
     if(SQL_DEBUG){
       $this->data['SQL_DEBUG_HTML'] = Debuging::getSQLDebugHTML();
     }else{
@@ -116,26 +111,12 @@ class Response{
   }
 
   /**
-   * Generates a JSON response
-   * @param bool $get Whether to return the JSON string or echo it
-   * @license https://opensource.org/licenses/mit-license.php MIT X11
+   * Redirects to the specified location
+   * @param string $location Location to redirect to
    * @access public
    */
-  public function getJSON($get = false){
-    if(SQL_DEBUG){
-      $this->data['SQL_DEBUG_ARRAY'] = $GLOBALS['SQL_DEBUG_ARRAY'];
-    }
-    
-    if($get){
-      return json_encode($this->data);
-    }else{
-      header('Content-Type: application/json');
-      echo json_encode($this->data);
-    }
-
-  }
-
-  public static function redirect($location){
+  public static function redirect(string $location) : void
+  {
     header('Location: '.$location);
   }
 

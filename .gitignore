@@ -3,3 +3,4 @@ vendor
 Uploads
 .phpunit.result.cache
 composer.lock
+test_db.sql

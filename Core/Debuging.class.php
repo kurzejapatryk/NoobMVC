@@ -1,8 +1,4 @@
 <?php
-/************************************************|
-|* Description | Debugging handling             *|
-|************************************************/
-
 namespace Core;
 
 /**
@@ -16,10 +12,10 @@ class Debuging{
    * Function getSQLDebugHTML
    * Function returns HTML with SQL debugging
    * @return string HTML with SQL debugging
-   * @license https://opensource.org/licenses/mit-license.php MIT X11
    * @access public
    */
-  public static function getSQLDebugHTML(){
+  public static function getSQLDebugHTML() : string
+  {
     $HTML = "";
     if(SQL_DEBUG){
       $HTML .= "<div style='z-index:100; background-color: #fff; color: #000; position: absolute; padding: 25px; width: 100%; opacity: 0.9;'><H2 class='text-2xl'>SQL DEBUG:</H2><br>";

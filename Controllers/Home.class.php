@@ -20,7 +20,8 @@ class Home{
    * @return void
    * @access public
    */
-  public static function start(){
+  public static function start() : void
+  {
     $Response = new Response();
     $Response->displayPage("Hello.tpl");
   }

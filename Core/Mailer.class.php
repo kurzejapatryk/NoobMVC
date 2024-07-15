@@ -1,5 +1,4 @@
 <?php
-
 namespace Core;
 
 use PHPMailer\PHPMailer\PHPMailer;
@@ -23,7 +22,8 @@ class Mailer{
      * @return bool
      * @access public
      */
-  public static function send($to, $subject, $message, $Attachment = []){
+  public static function send(string $to, string $subject, string $message, array $Attachment = []) : bool
+  {
     $mail = new PHPMailer(true);
     try {
         if(isset($_SERVER['CI']) && $_SERVER['CI'] == 'true'){

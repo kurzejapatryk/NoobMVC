@@ -1,5 +1,4 @@
 <?php
-
 namespace Core;
 /**
  * Validation
@@ -59,48 +58,46 @@ class Validation {
      * Field name
      *
      * @param string $name
-     * @return this
+     * @return self
      */
-    public function name($name){
-
+    public function name(string $name) : Validation
+    {
         $this->name = $name;
         return $this;
-
     }
 
     /**
      * Field value
      *
      * @param mixed $value
-     * @return this
+     * @return self
      */
-    public function value($value){
-
+    public function value($value) : Validation
+    {
         $this->value = $value;
         return $this;
-
     }
 
     /**
      * File
      *
      * @param mixed $value
-     * @return this
+     * @return self
      */
-    public function file($value){
-
+    public function file($value) : Validation
+    {
         $this->file = $value;
         return $this;
-
     }
 
     /**
      * Pattern to be used for regular expression matching
      *
      * @param string $name pattern name
-     * @return this
+     * @return self
      */
-    public function pattern($name){
+    public function pattern(string $name) : Validation
+    {
 
         if($name == 'array'){
 
@@ -123,47 +120,44 @@ class Validation {
 
         }
         return $this;
-
     }
 
     /**
      * Custom pattern
      *
      * @param string $pattern
-     * @return this
+     * @return self
      */
-    public function customPattern($pattern){
-
+    public function customPattern(string $pattern) : Validation
+    {
         $regex = '/^('.$pattern.')$/u';
         if($this->value != '' && !preg_match($regex, $this->value)){
             $this->errors[$this->name] = array('error' => "val_pattern");
         }
         return $this;
-
     }
 
     /**
      * Required field
      *
-     * @return this
+     * @return self
      */
-    public function required(){
-
+    public function required() : Validation
+    {
         if((isset($this->file) && $this->file['error'] == 4) || ($this->value == '' || $this->value == null)){
             $this->errors[$this->name] = array('error' => "val_required");
         }
         return $this;
-
     }
 
     /**
      * Minimum length of field value
      *
      * @param int $min
-     * @return this
+     * @return self
      */
-    public function min($length){
-
+    public function min(int $length) : Validation
+    {
         if(is_string($this->value)){
 
             if(strlen($this->value) < $length){
@@ -178,17 +172,16 @@ class Validation {
 
         }
         return $this;
-
     }
 
     /**
      * Maximum length of field value
      *
      * @param int $max
-     * @return this
+     * @return self
      */
-    public function max($length){
-
+    public function max($length) : Validation
+    {
         if(is_string($this->value)){
 
             if(strlen($this->value) > $length){
@@ -203,51 +196,48 @@ class Validation {
 
         }
         return $this;
-
     }
 
     /**
      * Compare with the value of another field
      *
      * @param mixed $value
-     * @return this
+     * @return self
      */
-    public function equal($value){
-
+    public function equal($value) : Validation
+    {
         if($this->value != $value){
             $this->errors[$this->name] = array('error' => "val_equal");
         }
         return $this;
-
     }
 
     /**
      * Maximum file size
      *
      * @param int $size
-     * @return this
+     * @return self
      */
-    public function maxSize($size){
-
+    public function maxSize(int $size) : Validation
+    {
         if($this->file['error'] != 4 && $this->file['size'] > $size){
             $this->errors[$this->name] = array('error' => "val_file_max_size", 'size' => number_format($size / 1048576, 2));
         }
         return $this;
-
     }
 
     /**
      * File extension
      *
      * @param string $extension
-     * @return this
+     * @return self
      */
-    public function ext($extension){
+    public function ext(string $extension) : Validation
+    {
         if($this->file['error'] != 4 && pathinfo($this->file['name'], PATHINFO_EXTENSION) != $extension && strtoupper(pathinfo($this->file['name'], PATHINFO_EXTENSION)) != $extension){
             $this->errors[$this->name] = array('error' => "val_file_ext", 'ext' => $extension);
         }
         return $this;
-
     }
 
     /**
@@ -256,7 +246,8 @@ class Validation {
      * @param string $string
      * @return $string
      */
-    public function purify($string){
+    public function purify(string $string) : string
+    {
         return htmlspecialchars($string, ENT_QUOTES, 'UTF-8');
     }
 
@@ -265,7 +256,8 @@ class Validation {
      *
      * @return boolean
      */
-    public function isSuccess(){
+    public function isSuccess() : bool
+    {
         return empty($this->errors);
     }
 
@@ -274,8 +266,13 @@ class Validation {
      *
      * @return array $this->errors
      */
-    public function getErrors(){
-        if(!$this->isSuccess()) return $this->errors;
+    public function getErrors() : array|null
+    {
+        if(!$this->isSuccess()){
+            return $this->errors;
+        }else{
+            return null;
+        }
     }
 
     /**
@@ -283,8 +280,8 @@ class Validation {
      *
      * @return string $html
      */
-    public function displayErrors(){
-
+    public function displayErrors() : string
+    {
         $html = '<ul>';
             foreach($this->getErrors() as $name => $error){
                 $html .= '<li>'.$name." - ".LANG['val_errors'][$error['error']].'</li>';
@@ -292,27 +289,20 @@ class Validation {
         $html .= '</ul>';
 
         return $html;
-
     }
 
     /**
      * Display validation result
      *
-     * @return booelan|string
+     * @return void
      */
-    public function result(){
-
+    public function result() : void
+    {
         if(!$this->isSuccess()){
-
             foreach($this->getErrors() as $error){
                 echo "$error\n";
             }
-            exit;
-
-        }else{
-            return true;
         }
-
     }
 
     /**
@@ -321,8 +311,13 @@ class Validation {
      * @param mixed $value
      * @return boolean
      */
-    public static function is_int($value){
-        if(filter_var($value, FILTER_VALIDATE_INT)) return true;
+    public static function is_int($value) : bool
+    {
+        if(filter_var($value, FILTER_VALIDATE_INT)){
+            return true;
+        }else{
+            return false;
+        }
     }
 
     /**
@@ -331,8 +326,13 @@ class Validation {
      * @param mixed $value
      * @return boolean
      */
-    public static function is_float($value){
-        if(filter_var($value, FILTER_VALIDATE_FLOAT)) return true;
+    public static function is_float($value) : bool
+    {
+        if(filter_var($value, FILTER_VALIDATE_FLOAT)){
+            return true;
+        }else{
+            return false;
+        }
     }
 
     /**
@@ -341,8 +341,13 @@ class Validation {
      * @param mixed $value
      * @return boolean
      */
-    public static function is_alpha($value){
-        if(filter_var($value, FILTER_VALIDATE_REGEXP, array('options' => array('regexp' => "/^[a-zA-Z]+$/")))) return true;
+    public static function is_alpha($value) : bool
+    {
+        if(filter_var($value, FILTER_VALIDATE_REGEXP, array('options' => array('regexp' => "/^[a-zA-Z]+$/")))){
+            return true;
+        }else{
+            return false;
+        }
     }
 
     /**
@@ -351,8 +356,13 @@ class Validation {
      * @param mixed $value
      * @return boolean
      */
-    public static function is_alphanum($value){
-        if(filter_var($value, FILTER_VALIDATE_REGEXP, array('options' => array('regexp' => "/^[a-zA-Z0-9]+$/")))) return true;
+    public static function is_alphanum($value) : bool
+    {
+        if(filter_var($value, FILTER_VALIDATE_REGEXP, array('options' => array('regexp' => "/^[a-zA-Z0-9]+$/")))){
+            return true;
+        }else{
+            return false;
+        }
     }
 
     /**
@@ -361,8 +371,13 @@ class Validation {
      * @param mixed $value
      * @return boolean
      */
-    public static function is_url($value){
-        if(filter_var($value, FILTER_VALIDATE_URL)) return true;
+    public static function is_url($value) : bool
+    {
+        if(filter_var($value, FILTER_VALIDATE_URL)) {
+            return true;
+        }else{
+            return false;
+        }
     }
 
     /**
@@ -371,8 +386,13 @@ class Validation {
      * @param mixed $value
      * @return boolean
      */
-    public static function is_uri($value){
-        if(filter_var($value, FILTER_VALIDATE_REGEXP, array('options' => array('regexp' => "/^[A-Za-z0-9-\/_]+$/")))) return true;
+    public static function is_uri($value) : bool
+    {
+        if(filter_var($value, FILTER_VALIDATE_REGEXP, array('options' => array('regexp' => "/^[A-Za-z0-9-\/_?&=]+$/")))){
+            return true;
+        }else{
+            return false;
+        }
     }
 
     /**
@@ -381,8 +401,13 @@ class Validation {
      * @param mixed $value
      * @return boolean
      */
-    public static function is_bool($value){
-        if(filter_var($value, FILTER_VALIDATE_BOOLEAN)) return true;
+    public static function is_bool($value) : bool
+    {
+        if(filter_var($value, FILTER_VALIDATE_BOOLEAN)) {
+            return true;
+        }else{
+            return false;
+        }
     }
 
     /**
@@ -391,8 +416,13 @@ class Validation {
      * @param mixed $value
      * @return boolean
      */
-    public static function is_email($value){
-        if(filter_var($value, FILTER_VALIDATE_EMAIL)) return true;
+    public static function is_email($value) : bool
+    {
+        if(filter_var($value, FILTER_VALIDATE_EMAIL)) {
+            return true;
+        }else{
+            return false;
+        }
     }
 
 }

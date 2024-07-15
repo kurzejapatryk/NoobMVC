@@ -102,10 +102,11 @@ class User extends Model{
   /**
    * Get user by username
    * @param string $user_name
-   * @return object
+   * @return User|false
    * @access public
    */
-  public function getByUserName($user_name){
+  public function getByUserName(string $user_name) : User|false
+  {
     $table = self::$table;
     if($user_name){
       $SQL = "SELECT * FROM ".$table." WHERE user_name = ? LIMIT 1";
@@ -122,10 +123,11 @@ class User extends Model{
   /**
    * Get user by email
    * @param string $email
-   * @return object
+   * @return User|false
    * @access public
    */
-  public function getByEmail($email){
+  public function getByEmail(string $email) : User|false
+  {
     $table = self::$table;
     if($email){
       $SQL = "SELECT * FROM ".$table." WHERE email = ? LIMIT 1";
@@ -145,16 +147,18 @@ class User extends Model{
    * @return void
    * @access public
    */
-  public function setPassword($password){
+  public function setPassword(string $password) : void
+  {
     $this->password = md5($password.SALT);
   }
 
   /**
    * Get password
-   * @return string
+   * @return string hashed password
    * @access public
    */
-  public function getPassword(){
+  public function getPassword() : string
+  {
     return $this->password;
   }
 }

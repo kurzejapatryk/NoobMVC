@@ -75,10 +75,11 @@ class ResetPasswordCode extends Model{
      * @access public
      * @static
      */
-    public static function checkUser($User){
+    public static function checkUser(User $User) : bool
+    {
         $Code = new ResetPasswordCode();
         $Code->user_id = $User->id;
-        $Code->search();
+        $Code->find();
         if($Code->id && $Code->code && $Code->used_time == null){
             $time = strtotime($Code->created_time);
             $now = time();
@@ -101,11 +102,12 @@ class ResetPasswordCode extends Model{
      * @access public
      * @static
      */
-    public static function verifyCode($code, $User){
+    public static function verifyCode(string $code, User $User) : bool
+    {
         $Code = new ResetPasswordCode();
         $Code->code = $code;
         $Code->user_id = $User->id;
-        $Code->search();
+        $Code->find();
         if($Code->id && $Code->code){
             $time = strtotime($Code->created_time);
             $now = time();
@@ -128,11 +130,12 @@ class ResetPasswordCode extends Model{
      * @access public
      * @static
      */
-    public static function useCode($code, $User){
+    public static function useCode(string $code, User $User) : bool
+    {
         $Code = new ResetPasswordCode();
         $Code->code = $code;
         $Code->user_id = $User->id;
-        $Code->search();
+        $Code->find();
         if($Code->id && $Code->code){
             $time = strtotime($Code->created_time);
             $now = time();
@@ -158,7 +161,8 @@ class ResetPasswordCode extends Model{
      * @access public
      * @static
      */
-    public static function deactiveAllCodesForUser($User){
+    public static function deactiveAllCodesForUser(User $User) : void
+    {
         $Codes = ResetPasswordCode::getAll(['user_id' => $User->id]);
         foreach($Codes as $Code){
             $Code->code = null;

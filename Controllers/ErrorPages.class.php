@@ -16,7 +16,8 @@ class ErrorPages{
    * @return void
    * @access public
    */
-  public static function start(){
+  public static function start() : void
+  {
     header("Location: /");
     exit;
   }
@@ -28,7 +29,8 @@ class ErrorPages{
    * @return void
    * @access public
    */
-  public static function e404(){
+  public static function e404() : void
+  {
     $resp = new Response();
     $resp->assign("ecode", "404");
     $resp->displayPage('Core/err.tpl');
@@ -40,7 +42,8 @@ class ErrorPages{
    * @return void
    * @access public
    */
-  public static function e500(){
+  public static function e500() : void
+  {
     $resp = new Response();
     $resp->assign("ecode", "500");
     $resp->displayPage('Core/err.tpl');
@@ -52,7 +55,8 @@ class ErrorPages{
    * @return void
    * @access public
    */
-  public static function e403(){
+  public static function e403() : void
+  {
     $resp = new Response();
     $resp->assign("ecode", "403");
     $resp->displayPage('Core/err.tpl');
@@ -64,7 +68,8 @@ class ErrorPages{
    * @return void
    * @access public
    */
-  public static function e401(){
+  public static function e401() : void
+  {
     $resp = new Response();
     $resp->assign("ecode", "401");
     $resp->displayPage('Core/err.tpl');
@@ -76,7 +81,8 @@ class ErrorPages{
    * @return void
    * @access public
    */
-  public static function e400(){
+  public static function e400() : void
+  {
     $resp = new Response();
     $resp->assign("ecode", "400");
     $resp->displayPage('Core/err.tpl');
