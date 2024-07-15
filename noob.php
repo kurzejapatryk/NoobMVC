@@ -89,8 +89,7 @@ if (PHP_SAPI == "cli") {
             }
         }
         // get all Models in Plugins
-        if(is_dir("Plugins/")){
-            
+        if(is_dir("Plugins/")){            
             $plugins = scandir('Plugins/');
             foreach ($plugins as $plugin) {
                 if($plugin != '.' && $plugin != '..' && $plugin != 'index.php' && !strpos($plugin, '.')){
