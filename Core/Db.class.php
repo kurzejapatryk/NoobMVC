@@ -34,10 +34,10 @@ class Db{
    * @param string $query Query
    * @param mixed[] $var SQL query variables
    * @param bool $assoc Whether to return an associative array
-   * @return PDOStatement|array|null Records
+   * @return array|false|null Retrieved records
    * @access public
    */
-  public static function select(string $query, array $var = array(), bool $assoc = false) : PDOStatement|array|null
+  public static function select(string $query, array $var = array(), bool $assoc = false) : array|false|null
   {
     $PDO = Db::connect();
     $result = NULL;
