@@ -27,7 +27,7 @@ class ApiController{
      * Sets the response value
      * @param string $name Value name
      * @param mixed $value Value
-     * @return ApiResponse
+     * @return ApiController
      * @access public
      */
     public function set(string $name, $value) : self

@@ -32,13 +32,22 @@ class ApiControllerTest extends TestCase
     public function testGetJSON()
     {
         $response = new ApiController();
+        $response->set('result', ['key' => 'test_value']);
+    
+        $result = $response->getJSON();
+        $this->assertStringContainsString('test_value', $result);
+    }
+
+    public function testDisplay()
+    {
+        $response = new ApiController();
         $response->set('ERROR', true)
                  ->set('MSG', 'Error occurred')
                  ->set('result', ['key' => 'value']);
 
         ob_start();
 
-        $response->getJSON(false);
+        $response->display(false);
 
         // get the output buffer
         $output = ob_get_clean();
@@ -47,6 +56,5 @@ class ApiControllerTest extends TestCase
         $this->assertStringContainsString('"ERROR":true', $output);
         $this->assertStringContainsString('"MSG":"Error occurred"', $output);
         $this->assertStringContainsString('"result":{"key":"value"}', $output);
-        
     }
 }
