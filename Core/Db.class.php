@@ -1,8 +1,4 @@
 <?php
-/************************************************|
-|* Description | MySQL database controller      *|
-|************************************************/
-
 namespace Core;
 
 use \PDO;
