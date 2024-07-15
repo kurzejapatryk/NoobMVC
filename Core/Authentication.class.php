@@ -37,10 +37,10 @@ class Authentication{
                     }
                     $this->active_user = true;
                 }else{
-                    $this->restart_session();  
+                    $this->restartSession();  
                 }
             }elseif($Session->auth_key){
-                $this->restart_session();
+                $this->restartSession();
             }else {
                 $this->active_user = false;
                 $this->User = new User();
@@ -56,7 +56,7 @@ class Authentication{
      * Function to restart the session
      * @return void
      */
-    private function restart_session() : void
+    private function restartSession() : void
     {
         session_regenerate_id(true);
         $this->User = new User();
@@ -83,7 +83,7 @@ class Authentication{
      * Function to check if the user is logged in
      * @return bool - whether the user is logged in
      */
-    public function is_log_in() : bool
+    public function isLogin() : bool
     {
         return $this->active_user;
     }
@@ -92,7 +92,7 @@ class Authentication{
      * Function to check if the user is logged in as an administrator
      * @return bool - whether the user is logged in as an administrator
      */
-    public function is_admin_log_in() : bool
+    public function isAdmin() : bool
     {
         return( $this->active_user && $this->User->role == 1);
     }
@@ -101,7 +101,7 @@ class Authentication{
      * Function to get the user object
      * @return object - user object
      */
-    public function get_user() : User
+    public function getUser() : User
     {
         return $this->User;
     }
@@ -110,13 +110,13 @@ class Authentication{
      * Function to log out the user
      * @return void
      */
-    public function log_out() : void
+    public function logout() : void
     {
         $Session = new Session();
         $Session->getBySessionID(session_id());
         $Session->expire_datetime = 0;
         $Session->save();
-        $this->restart_session();
+        $this->restartSession();
     }
 
     /**
@@ -126,7 +126,7 @@ class Authentication{
      * @param bool $admin - whether the user is an administrator (default false)
      * @return bool - whether the login was successful
      */
-    public function log_in(string $user_name, string $password, bool $admin = false) : bool
+    public function login(string $user_name, string $password, bool $admin = false) : bool
     {
         $User = new User();
         $User->getByUserName($user_name);
