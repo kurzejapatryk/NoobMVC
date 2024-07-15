@@ -89,11 +89,11 @@ class Setting extends Model{
   /**
    * Retrieves the value of a setting by name
    * @param string $name
-   * @return string
+   * @return mixed
    * @access public
    * @static
    */
-  public static function getValueByName(string $name) : string
+  public static function getValueByName(string $name)
   {
     $Setting = new Setting();
     $Setting->name = $name;

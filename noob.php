@@ -16,7 +16,7 @@ if (PHP_SAPI == "cli") {
     if(isset($options["debug"]) || isset($options["d"])) {
         error_reporting(E_ALL);
         ini_set('display_errors', 1);
-        echo "\e[104mDebug mode is enabled!!\e[39m \n";
+        echo "Debug mode is enabled!!\n";
     }else{
         error_reporting(0);
         ini_set('display_errors', 0);
@@ -24,7 +24,7 @@ if (PHP_SAPI == "cli") {
 
     if(isset($options["testdb"])) {
         $DB_TEST = true;
-        echo "\e[104mTest database is enabled!!\e[39m \n";
+        echo "Test database is enabled!!\n";
     }
 
 
@@ -78,7 +78,7 @@ if (PHP_SAPI == "cli") {
                     $count_all++;
                     $count_success++;
                 }else{
-                    if(strpos($GLOBALS['SQL_DEBUG_ARRAY'][count($GLOBALS['SQL_DEBUG_ARRAY'])-1]['error'], 'already exists')){
+                    if(isset($GLOBALS['SQL_DEBUG_ARRAY'][count($GLOBALS['SQL_DEBUG_ARRAY'])-1]['error']) && strpos($GLOBALS['SQL_DEBUG_ARRAY'][count($GLOBALS['SQL_DEBUG_ARRAY'])-1]['error'], 'already exists')){
                         echo "\e[93mAlready exists\e[39m\n";
                     }else{
                         echo "\e[91mfail\e[39m\n";
@@ -89,33 +89,38 @@ if (PHP_SAPI == "cli") {
             }
         }
         // get all Models in Plugins
-        $plugins = scandir('Plugins/');
-        foreach ($plugins as $plugin) {
-            if($plugin != '.' && $plugin != '..' && $plugin != 'index.php' && !strpos($plugin, '.')){
-                $models = scandir('Plugins/' . $plugin.'/Models/');
-                $plugin = 'Plugins\\'.$plugin;
-                foreach ($models as $model) {
-                    if($model != '.' && $model != '..' && $model != 'Model.class.php' && $model != 'index.php'){
-                        $model = str_replace('.class.php','',$model);
-                        $model = $plugin.'\\Models\\'.$model;
-                        echo $model . ": ";
-                        $resp = $model::createTable();
-                        if($resp){
-                            echo "\e[32mok\e[39m\n";
-                            $count_all++;
-                            $count_success++;
-                        }else{
-                            if(strpos($GLOBALS['SQL_DEBUG_ARRAY'][count($GLOBALS['SQL_DEBUG_ARRAY'])-1]['error'], 'already exists')){
-                                echo "\e[93mAlready exists\e[39m\n";
-                            }else{
-                                echo "\e[91mfail\e[39m\n";
+        if(is_dir("Plugins/")){
+            
+            $plugins = scandir('Plugins/');
+            foreach ($plugins as $plugin) {
+                if($plugin != '.' && $plugin != '..' && $plugin != 'index.php' && !strpos($plugin, '.')){
+                    $models = scandir('Plugins/' . $plugin.'/Models/');
+                    $plugin = 'Plugins\\'.$plugin;
+                    foreach ($models as $model) {
+                        if($model != '.' && $model != '..' && $model != 'Model.class.php' && $model != 'index.php'){
+                            $model = str_replace('.class.php','',$model);
+                            $model = $plugin.'\\Models\\'.$model;
+                            echo $model . ": ";
+                            $resp = $model::createTable();
+                            if($resp){
+                                echo "\e[32mok\e[39m\n";
                                 $count_all++;
-                                $created_errors = true;
-                            }
-                        } 
+                                $count_success++;
+                            }else{
+                                if(strpos($GLOBALS['SQL_DEBUG_ARRAY'][count($GLOBALS['SQL_DEBUG_ARRAY'])-1]['error'], 'already exists')){
+                                    echo "\e[93mAlready exists\e[39m\n";
+                                }else{
+                                    echo "\e[91mfail\e[39m\n";
+                                    $count_all++;
+                                    $created_errors = true;
+                                }
+                            } 
+                        }
                     }
                 }
             }
+        }else{
+            echo "Plugins directory not found.\n";
         }
         if($created_errors){
             echo "\nCreated ".$count_success."/".$count_all." tables in database. Some tables are not created.";
