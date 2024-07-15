@@ -276,7 +276,7 @@ The arguments that the method accepts are:
 The method returns `true` on success or `false` on failure.
 Remember to configure the file `Configs/Mailer.php`.
 
-Przykład:
+Example:
 ```php
 use Core\Mailer;
 
