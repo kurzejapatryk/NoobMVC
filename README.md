@@ -4,6 +4,7 @@ NoobMVC is a simple MVC framework created for beginner PHP developers. The main 
 ## Table of contents
 * [Technology](#technology)
 * [Instalation](#instalation)
+* [Docker Server Setup](#docker-server-setup)
 * [Configuration](#configuration)
 * [Controllers](#controllers)
 * [Models](#models)
@@ -29,6 +30,39 @@ or clone the repository and install the dependencies:
 git clone git@github.com:kurzejapatryk/NoobMVC.git
 composer install
 ```
+
+## Docker Server Setup
+You can use a traditional server like Apache, Nginx, or XAMPP to run the application. Alternatively, you can create a Docker container using the command. This is the recommended option, especially for beginners:
+
+_You need Docker installed! If you don't have it, you can download it from [this site](https://www.docker.com/). Also, make sure Docker is running on Windows._
+
+```bash
+docker compose up --build -d --watch
+```
+Adding the `--watch` flag will automatically synchronize changes between the code and the Docker container.
+
+This setup will automatically create a container with the project on port `80`, a container with a MySQL database on port `3306`, and a container with PHPMyAdmin accessible on port `8080`.
+
+To create the necessary tables in the database, you can use the NoobMVC CLI tool through Docker. This process can be performed whenever new tables are added to the application. The current implementation does not delete or modify existing tables, so if you need to remove them, you should use PHPMyAdmin.
+```bash
+docker exec apache-noobMVC php noob.php -i
+```
+To create all tables and also set up an admin user with a specified password, use the following command:
+```bash
+docker exec apache-noobMVC php noob.php -ipassword123
+```
+**Replace password123 with your desired password for the admin user. The password must be at least 8 characters long.**
+
+### Managing Existing Tables
+If you need to remove existing tables, you can use PHPMyAdmin:
+Access PHPMyAdmin at [http://localhost:8080/](http://localhost:8080/).
+Login with the following credentials:
+* Username: `db_user`
+* Password: `password123`
+
+From there, you can manually delete any existing tables before running the CLI tool.
+
+_The CLI tool is planned to be enhanced for full automation, including the ability to delete or modify existing tables. Until these improvements are implemented, manual management via PHPMyAdmin is recommended for existing tables._
 
 ## Configuration Files
 Application settings are located in the Configs directory. Each file is responsible for a different aspect of the application.
