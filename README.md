@@ -180,7 +180,8 @@ class User extends Model{
     public $email;
 
 
-    public function getByUserName($user_name){
+    public function getByUserName(string $user_name) : User
+    {
         $table = $this->table;
         if($user_name){
             $SQL = "SELECT * FROM ".$table." WHERE user_name = ? LIMIT 1";
@@ -285,7 +286,7 @@ Mailer::send('test@test.com', 'Test message', '<h1>Test Message</h1><p>This is t
 
 ## Documentation
 
-You can find more information in the wiki on GitHub.
+You can find more information in the [wiki on GitHub](https://github.com/kurzejapatryk/NoobMVC/wiki).
 
 ## Support
 If you want to support my work, you can propose changes to the project or create your own code and generate a Pull Request. You can also drink to my health :)

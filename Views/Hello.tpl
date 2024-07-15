@@ -1,4 +1,4 @@
-<h1>{$lang['hello']}</h1>
+<h1>{$language['hello']}</h1>
 
 
 {if SQL_DEBUG}
