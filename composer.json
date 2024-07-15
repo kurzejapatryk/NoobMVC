@@ -6,6 +6,7 @@
     "license": "MIT",
     "type": "project",
     "version": "1.2.3",
+    "minimum-stability": "stable",
     "authors": [
         {
             "name": "Patryk Kurzeja`",
