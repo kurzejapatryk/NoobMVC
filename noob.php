@@ -7,8 +7,6 @@ if (PHP_SAPI == "cli") {
         exit;
     }
 
-    require_once __DIR__ . '/bootstrap.php';
-
     $short_options = "vhi::d";
     $long_options = ["version", "help", "init::", "testdb", "debug"];
     $options = getopt($short_options, $long_options);
@@ -27,6 +25,7 @@ if (PHP_SAPI == "cli") {
         echo "Test database is enabled!!\n";
     }
 
+    require_once __DIR__ . '/bootstrap.php';
 
     if(isset($options["v"]) || isset($options["version"])) {
         echo asciArt();
