@@ -12,7 +12,7 @@
     "hello" => "Olá Mundo!",
     "hello_installation_successful" => "Instalação do NoobMVC bem-sucedida!",
     "hello_message" => 
-            "<p>Esta é a visualização padrão para o controlador Hello. Você pode encontrá-lo no arquivo Views/Hello.tpl.
+            "<p class='p-2'>Esta é a visualização padrão para o controlador Hello. Você pode encontrá-lo no arquivo Views/Hello.tpl.
             Para obter mais informações sobre como usar o NoobMVC, visite o <a href='https://github.com/kurzejapatryk/NoobMVC/wiki'>site do NoobMVC no Github</a>.</p>
             <p>Agora, crie seus próprios controladores e visualizações!</p>",
     
