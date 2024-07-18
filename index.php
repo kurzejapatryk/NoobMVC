@@ -38,6 +38,7 @@ if(!isset($_SESSION['csrf'])){
 }
 
 // start
+$method = false;
 if(!isset($_GET['page'])){
   $classname = "Controllers\\" . START_CONTROLLER;
   $classname::start();

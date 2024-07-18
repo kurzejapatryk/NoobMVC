@@ -4,6 +4,7 @@ namespace Core;
 use Smarty;
 
 use Core\Debuging;
+use Core\Authentication;
 use Models\Setting;
 
 /**
@@ -22,6 +23,8 @@ class Response{
    */
   public function __construct(){
     $smarty = new Smarty();
+    $auth = new Authentication();
+    // Load default data
     $this->data = array(
       'version' => VERSION,
       'core_version' => CORE_VERSION,
@@ -29,8 +32,10 @@ class Response{
       'lang_code' => LANGUAGE,
       'language' => LANG,
       'url' => URL,
-      'settings' => Setting::getAll()
+      'settings' => Setting::getAll(),
+      'user' => $auth->isLogin() ? $auth->getUser() : false,
     );
+    // Load active page
     if(isset($_GET['page'])){
       if(isset($_GET['action'])){
         $smarty->assign('active_page', $_GET['page']."/".$_GET['action']);
@@ -40,7 +45,7 @@ class Response{
     }else{
       $smarty->assign('active_page', "");
     }
-
+    // Load Smarty
     $smarty->setTemplateDir( PATH . 'Views' );
     $smarty->setCompileDir( TMP . 'templates_c' );
     $smarty->setCacheDir(TMP . 'cache');
@@ -76,16 +81,25 @@ class Response{
    */
   public function displayPage(string $view) : void
   {
-    if(SQL_DEBUG){
-      $this->data['SQL_DEBUG_HTML'] = Debuging::getSQLDebugHTML();
-    }else{
-      $this->data['SQL_DEBUG_HTML'] = "";
+    // Load debug data
+    if(DEBUG_PANEL){
+      $this->data['DEBUG'] = [
+        'sql' => Debuging::getSQLDebugArray(),
+        'execution_time' => getExecutionTime(),
+        'memory_usage' => round(memory_get_usage() / 1024, 2),
+        'memory_peak_usage' => round(memory_get_peak_usage() / 1024, 2),
+        'controller' => str_replace('Controllers\\','',$GLOBALS['classname']),
+        'action' => $GLOBALS['method'] ? $GLOBALS['method'] : 'start',
+        'loaded_files' => get_included_files(),
+        'view' => $view,
+      ];
     }
     if(is_array($this->data)){
       foreach($this->data as $key => $value){
         $this->smrt->assign($key, $value);
       }
     }
+    
     $this->smrt->display(PATH . 'Views/' . $view);
   }
 
@@ -96,11 +110,7 @@ class Response{
    */
   public function getPage(string $view) : string
   {
-    if(SQL_DEBUG){
-      $this->data['SQL_DEBUG_HTML'] = Debuging::getSQLDebugHTML();
-    }else{
-      $this->data['SQL_DEBUG_HTML'] = "";
-    }
+    $this->data["DEBUG"]['view'] = $view;
     if(is_array($this->data)){
       foreach($this->data as $key => $value){
         $this->smrt->assign($key, $value);

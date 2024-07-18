@@ -31,11 +31,9 @@
 
     <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
     
-    <!-- SQL debug -->
-    {if SQL_DEBUG}
-        <hr>
-        {$SQL_DEBUG_HTML}
+    {if DEBUG_PANEL}
+        <!-- debug -->
+        {include file='Core/debugPanel.tpl'}
     {/if}
-
 </body>
 </html>

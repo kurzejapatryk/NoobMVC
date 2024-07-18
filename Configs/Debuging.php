@@ -5,8 +5,7 @@
 
 /* Error reporting */
 define('CODE_DEBUG', true);      // Code error reporting
-define('SQL_DEBUG', true);      // Database error reporting
-
+define('DEBUG_PANEL', true);     // Debug panel
 
 
 /* Global Vars for debugging -> Do not change this section */

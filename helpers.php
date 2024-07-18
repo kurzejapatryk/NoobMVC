@@ -16,6 +16,14 @@ function true_empty($data){
 }
 
 /**
+ * Summary of getExecutionTime
+ * @return string
+ */
+function getExecutionTime(){
+  return round((microtime(true) - $_SERVER["REQUEST_TIME_FLOAT"]) * 1000, 2);
+}
+
+/**
  * Converts an array to a string, with individual elements separated by commas.
  * @param array $data
  * @return string
