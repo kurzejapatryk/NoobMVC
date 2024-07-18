@@ -91,6 +91,7 @@ class Response{
         'controller' => str_replace('Controllers\\','',$GLOBALS['classname']),
         'action' => $GLOBALS['method'] ? $GLOBALS['method'] : 'start',
         'loaded_files' => get_included_files(),
+        'defined_vars' => $GLOBALS,
         'view' => $view,
       ];
     }

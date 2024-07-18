@@ -86,12 +86,20 @@
         overflow-y: auto;
         max-height: calc(100vh - 63px);
     }
+
+    .debugPanel__DefinedVars {
+        display: none;
+        padding: 10px;
+        overflow-y: auto;
+        max-height: calc(100vh - 63px);
+    }
+
 </style>
 
 <div style="height: 48px; width: 100%;"></div>
 
 <div class="debugPanel">
-    <div id="SQLDebug" class="debugPanel__SQLDebug" style="display: none;">
+    <div id="SQLDebug" class="dropdown debugPanel__SQLDebug" style="display: none;">
         <h2>Debug SQL</h2>
         {foreach $DEBUG['sql'] as $query}
             <table style="margin-bottom: 5px;">
@@ -110,11 +118,46 @@
         {/foreach}
         <hr>
     </div>
-    <div id="LoadedFiles" class="debugPanel__LoadedFiles" style="display: none;">
+    <div id="LoadedFiles" class="dropdown debugPanel__LoadedFiles" style="display: none;">
         <h2>Loaded files</h2>
         <table>
             {foreach $DEBUG['loaded_files'] as $file}  
                 <tr><td>{$file}</td></tr>
+            {/foreach}
+        </table>
+        <hr>
+    </div>
+    <div id="DefinedVars" class="dropdown debugPanel__DefinedVars" style="display: none;">
+        <h2>Defined vars</h2>
+        <table>
+            {foreach $DEBUG['defined_vars'] as $key => $value}
+                {if is_array($value)}
+                    <tr>
+                        <td><b>{$key}</b></td>
+                        <td>
+                            <table>
+                                {foreach $value as $key2 => $value2}
+                                    {if is_array($value2)}
+                                        <tr><td><b>{$key2}</b></td></tr>
+                                        <tr>
+                                            <td>
+                                                <table>
+                                                    {foreach $value2 as $key3 => $value3}
+                                                        <tr><td><b>{$key3}</b>: {if is_array($value3)}{json_encode($value3)}{else}{$value3}{/if}</td></tr>
+                                                    {/foreach}
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    {else}
+                                    <tr><td><b>{$key2}</b>: {$value2}</td></tr>
+                                    {/if}
+                                {/foreach}
+                            </table>
+                        </td>
+                    </tr>
+                {else}
+                    <tr><td><b>{$key}</b>: {$value}</td></tr>
+                {/if}
             {/foreach}
         </table>
         <hr>
@@ -135,34 +178,52 @@
                     <span class="debugPanel__span">Guest</span>
                 {/if}
             </li>
-            <li class="dropdown">
+            <li>
                 <a href="#" onclick="showSQLDebug()" class="dropdown-toggle" data-toggle="dropdown">SQL queries <span class="caret"></span></a>  
             </li>
-            <li class="dropdown">
+            <li>
                 <a href="#" onclick="showLoadedFiles()">Loaded files</a>
             </li>
+            <li>
+                <a href="#" onclick="showVars()">Defined vars</a>
         </ul>
         <span>v{CORE_VERSION}</span>
     </div>
 </div>
 
 <script>
+function closeAllDropdowns() {
+    var elements = document.getElementsByClassName("dropdown");
+    for (var i = 0; i < elements.length; i++) {
+        elements[i].style.display = "none";
+    }
+}
+
+
 function showSQLDebug() {
     var x = document.getElementById("SQLDebug");
-    var y = document.getElementById("LoadedFiles");
     if (x.style.display === "none") {
+        closeAllDropdowns();
         x.style.display = "block";
-        y.style.display = "none";
     } else {
         x.style.display = "none";
     }
 }
 function showLoadedFiles() {
     var x = document.getElementById("LoadedFiles");
-    var y = document.getElementById("SQLDebug");
     if (x.style.display === "none") {
+        closeAllDropdowns();
         x.style.display = "block";
-        y.style.display = "none";
+    } else {
+        x.style.display = "none";
+    }
+}
+
+function showVars() {
+    var x = document.getElementById("DefinedVars");
+    if (x.style.display === "none") {
+        closeAllDropdowns();
+        x.style.display = "block";
     } else {
         x.style.display = "none";
     }
