@@ -28,6 +28,18 @@
 
     unset($GLOBALS['DB_CONF']);
 
+    // load language
+    $userLang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
+    $acceptLang = [];
+    $langs = scandir('Language/');
+    foreach ($langs as $lang) {
+        if($lang != '.' && $lang != '..' && $lang != 'index.php'){
+            $acceptLang[] = str_replace('.php','',$lang);
+        }
+    }
+    $lang = in_array($userLang, $acceptLang) ? $userLang : DEFAULT_LANGUAGE;
+    define('LANGUAGE', $lang);
+
     // load classes
     spl_autoload_register(function ($name){
         $className = (string) str_replace('\\', DIRECTORY_SEPARATOR, $name);
