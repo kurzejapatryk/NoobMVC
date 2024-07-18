@@ -5,9 +5,16 @@
 
 /* General */
  define('LANG', array(
-  "hello" => "Witaj Świecie!",
   "username_or_password_is_invalid" => "Błędny login lub hasło.",
   "login_btn" => "Zaloguj",
+
+    // Hello.tpl
+    "hello" => "Witaj świecie!",
+    "hello_installation_successful" => "Instalacja NoobMVC zakończona sukcesem!",
+    "hello_message" => 
+            "<p>To jest domyślny widok dla kontrolera Hello. Możesz go znaleźć w pliku Views/Hello.tpl.
+            Aby uzyskać więcej informacji na temat korzystania z NoobMVC, odwiedź <a href='https://github.com/kurzejapatryk/NoobMVC/wiki'>stronę NoobMVC na Githubie</a>.</p>
+            <p>Teraz stwórz własne kontrolery i widoki!</p>",
 
   /* Months */
   "months" => [
@@ -43,7 +50,7 @@
     "val_pattern" => "Niepoprawny format danych.",
     "val_required" => "Pole jest wymagane.",
     "val_min" => "Wartość jest zbyt mała.",
-    "val_max" => "Wartość jest zbyt duza.",
+    "val_max" => "Wartość jest zbyt duża.",
     "val_equal" => "Wartość powinna być równa ",
     "val_file_max_size" => "Plik jest zbyt duży.",
     "val_file_ext" => "Niedozwolony format pliku.",

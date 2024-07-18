@@ -5,9 +5,16 @@
 
     /* General */
  define('LANG', array(
-    "hello" => "¡Hola Mundo!",
     "username_or_password_is_invalid" => "Tu nombre de usuario o contraseña es inválido.",
     "login_btn" => "Iniciar sesión",
+    
+    // Hello.tpl
+    "hello" => "¡Hola Mundo!",
+    "hello_installation_successful" => "¡Instalación exitosa de NoobMVC!",
+    "hello_message" => 
+            "<p>Esta es la vista predeterminada para el controlador Hello. Puedes encontrarla en el archivo Views/Hello.tpl.
+            Para obtener más información sobre cómo usar NoobMVC, visita el <a href='https://github.com/kurzejapatryk/NoobMVC/wiki'>sitio web de NoobMVC en Github</a>.</p>
+            <p>¡Ahora crea tus propios controladores y vistas!</p>",
     
     /* Months */
     "months" => [

@@ -5,10 +5,18 @@
 
     /* Allgemein */
  define('LANG', array(
-    "hello" => "Hallo Welt!",
     "username_or_password_is_invalid" => "Dein Benutzername oder Passwort ist ungültig.",
     "login_btn" => "Anmelden",
-    
+
+    // Hello.tpl
+    "hello" => "Hallo Welt!",
+    "hello_installation_successful" => "NoobMVC Installation erfolgreich!",
+    "hello_message" => 
+            "<p>Dies ist die Standardansicht für den Hello-Controller. Sie finden sie in der Datei Views/Hello.tpl.
+            Weitere Informationen zur Verwendung von NoobMVC finden Sie auf der <a href='https://github.com/kurzejapatryk/NoobMVC/wiki'>NoobMVC-Website auf Github</a>.</p>
+            <p>Jetzt können Sie Ihre eigenen Controller und Ansichten erstellen!</p>",
+
+
     /* Monate */
     "months" => [
         '01' => "Januar",
