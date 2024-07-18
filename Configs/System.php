@@ -15,4 +15,4 @@ define('SESSION_EXPIRED_TIME', 3600);               // Login session expiration 
 define('SALT', 'pPWDrfft45M9bHntDdRf4E2eEA46rXht'); // Salt used for password hashing
 
 /* Core Constants */
-define('CORE_VERSION', '1.3.0');                    // Framework version
+define('CORE_VERSION', '1.3.0-beta');                    // Framework version
