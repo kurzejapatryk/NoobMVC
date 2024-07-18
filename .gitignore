@@ -4,3 +4,5 @@ Uploads
 .phpunit.result.cache
 composer.lock
 test_db.sql
+node_modules
+package-lock.json
