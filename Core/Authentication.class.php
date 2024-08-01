@@ -127,10 +127,15 @@ class Authentication{
      * @return bool - whether the login was successful
      */
     public function login(string $user_name, string $password, bool $admin = false) : bool
-    {
+    {   
         $User = new User();
         $User->getByUserName($user_name);
-        if($User->getPassword() == md5($password . SALT) && !$admin || $User->role){
+        
+        if($admin){
+            if($User->role != 1) return false;
+        }
+
+        if($User->getPassword() == md5($password . SALT)){
             $auth_key = $this->gen_auth_key();
             $_SESSION['AUTH_KEY'] = $auth_key;
             $Session = new Session();
