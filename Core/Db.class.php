@@ -128,9 +128,6 @@ class Db{
           $error = $PDO->errorInfo();
         }else{
           foreach($var as $value){
-            if(true_empty($value)){
-              $value='';
-            }
             $qr->bindValue($i, $value);
             $i++;
           }
