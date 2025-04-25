@@ -1,8 +1,8 @@
 {
     "name": "kurzejapatryk/noobmvc",
     "description": "Simple and tiny MVC framework for beginers PHP programers.",
+    "homepage": "https://github.com/kurzejapatryk/NoobMVC",
     "keywords": ["php","framework","noobmvc"],
-    "homepage": "https://https://github.com/kurzejapatryk/NoobMVC",
     "license": "MIT",
     "type": "project",
     "version": "1.2.3",
