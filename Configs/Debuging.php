@@ -4,8 +4,8 @@
 |************************************************/
 
 /* Error reporting */
-define('CODE_DEBUG', true);      // Code error reporting
-define('SQL_DEBUG', true);      // Database error reporting
+define('CODE_DEBUG', false);      // Code error reporting
+define('SQL_DEBUG', false);      // Database error reporting
 
 
 

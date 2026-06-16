@@ -2,8 +2,8 @@
 if (PHP_SAPI == "cli") {
 
     // check PHP Version
-    if(phpversion()<'7.4' ){
-        echo 'Your version of PHP is '.phpversion().'. Required min. 7.4';
+    if(phpversion()<'8.2' ){
+        echo 'Your version of PHP is '.phpversion().'. Required min. 8.2';
         exit;
     }
 

@@ -15,7 +15,7 @@ NoobMVC is a simple MVC framework created for beginner PHP developers. The main 
 * [Documentation](#documentation)
 
 ## Technology
-* PHP: >= 7.4
+* PHP: >= 8.2
 * SMARTY: ^4.3.2
 
 # Getting started
