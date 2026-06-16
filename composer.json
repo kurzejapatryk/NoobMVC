@@ -15,7 +15,7 @@
         }
     ],
     "require": {
-        "php": ">=7.2",
+        "php": ">=8.2",
         "smarty/smarty": "^4.3.2",
         "phpmailer/phpmailer": "^6.9"
     },

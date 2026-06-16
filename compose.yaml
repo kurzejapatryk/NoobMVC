@@ -3,6 +3,8 @@ services:
     container_name: apache-noobMVC
     build:
       context: .
+    depends_on:
+      - mysql
     ports:
       - 80:80
     develop:
@@ -30,7 +32,6 @@ services:
       - 3306:3306
     volumes:
       -  database:/var/lib/mysql
-      - ./test_db.sql:/docker-entrypoint-initdb.d/dump.sql
 
   phpmyadmin:
     image: phpmyadmin

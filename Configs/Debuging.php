@@ -4,8 +4,9 @@
 |************************************************/
 
 /* Error reporting */
-define('CODE_DEBUG', true);      // Code error reporting
-define('DEBUG_PANEL', true);     // Debug panel
+define('CODE_DEBUG', false);      // Code error reporting
+define('SQL_DEBUG', false);      // Database error reporting
+define('DEBUG_PANEL', false);     // Debug panel
 
 
 /* Global Vars for debugging -> Do not change this section */

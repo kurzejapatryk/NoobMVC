@@ -29,7 +29,8 @@
     unset($GLOBALS['DB_CONF']);
 
     // load language
-    $userLang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
+    $acceptLanguageHeader = $_SERVER['HTTP_ACCEPT_LANGUAGE'] ?? DEFAULT_LANGUAGE;
+    $userLang = substr((string)$acceptLanguageHeader, 0, 2);
     $acceptLang = [];
     $langs = scandir('Language/');
     foreach ($langs as $lang) {

@@ -128,9 +128,6 @@ class Db{
           $error = $PDO->errorInfo();
         }else{
           foreach($var as $value){
-            if(true_empty($value)){
-              $value='';
-            }
             $qr->bindValue($i, $value);
             $i++;
           }
@@ -231,10 +228,28 @@ class Db{
    */
   public static function tableIsExists(string $table) : bool
   {
+    if(!preg_match('/^[A-Za-z_][A-Za-z0-9_]*$/', $table)){
+      return false;
+    }
+
     $PDO = Db::connect();
-    $result = $PDO->query("SHOW TABLES LIKE '".$table."'");
+    if($PDO === null){
+      return false;
+    }
+
+    $result = false;
+    try{
+      $qr = $PDO->prepare("SHOW TABLES LIKE ?");
+      if($qr){
+        $qr->execute(array($table));
+        $result = $qr;
+      }
+    }catch (PDOException $e){
+      $result = false;
+    }
+
     $PDO = null;
-    if($result->rowCount() > 0){
+    if($result && $result->rowCount() > 0){
       return true;
     }else{
       return false;

@@ -16,6 +16,24 @@ class Authentication{
     private $User;          //user object
 
     /**
+     * Factory method for creating user model.
+     * @return User
+     */
+    protected function createUserModel() : User
+    {
+        return new User();
+    }
+
+    /**
+     * Factory method for creating session model.
+     * @return Session
+     */
+    protected function createSessionModel() : Session
+    {
+        return new Session();
+    }
+
+    /**
      * Class constructor
      * Checks if the user is logged in
      * If yes, sets the user object
@@ -26,11 +44,13 @@ class Authentication{
     public function __construct(bool $renew = true)
     {
         if(isset($_SESSION['AUTH_KEY'])){
-            $Session = new Session();
+            $Session = $this->createSessionModel();
             $Session->getBySessionID(session_id());
             if($Session->auth_key == $_SESSION['AUTH_KEY']){
                 if ($Session->expire_datetime > time()) {
-                    $this->User = new User($Session->user_id);
+                    $this->User = $this->createUserModel();
+                    $this->User->id = (int)$Session->user_id;
+                    $this->User->get();
                     if($renew){
                         $Session->expire_datetime =  time() + SESSION_EXPIRED_TIME;
                         $Session->save();
@@ -43,10 +63,10 @@ class Authentication{
                 $this->restartSession();
             }else {
                 $this->active_user = false;
-                $this->User = new User();
+                $this->User = $this->createUserModel();
             }
         }else{
-            $this->User = new User();
+            $this->User = $this->createUserModel();
             $this->active_user = false;
         }
 
@@ -58,8 +78,15 @@ class Authentication{
      */
     private function restartSession() : void
     {
-        session_regenerate_id(true);
-        $this->User = new User();
+        if(session_status() !== PHP_SESSION_ACTIVE){
+            @session_start();
+        }
+
+        if(session_status() === PHP_SESSION_ACTIVE){
+            session_regenerate_id(true);
+        }
+
+        $this->User = $this->createUserModel();
         $this->active_user = false;
     }
 
@@ -70,13 +97,8 @@ class Authentication{
      */
     private function gen_auth_key(int $length = 128) : string
     {
-        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $charactersLength = strlen($characters);
-        $randomString = '';
-        for ($i = 0; $i < $length; $i++) {
-            $randomString .= $characters[rand(0, $charactersLength - 1)];
-        }
-        return $randomString.md5(time());
+        $byteLength = (int) ceil($length / 2);
+        return substr(bin2hex(random_bytes($byteLength)), 0, $length);
     }
 
     /**
@@ -112,7 +134,7 @@ class Authentication{
      */
     public function logout() : void
     {
-        $Session = new Session();
+        $Session = $this->createSessionModel();
         $Session->getBySessionID(session_id());
         $Session->expire_datetime = 0;
         $Session->save();
@@ -127,18 +149,27 @@ class Authentication{
      * @return bool - whether the login was successful
      */
     public function login(string $user_name, string $password, bool $admin = false) : bool
-    {   
-        $User = new User();
+    {
+        $User = $this->createUserModel();
         $User->getByUserName($user_name);
-        
+
+        if(empty($User->id)){
+            return false;
+        }
+
         if($admin){
             if($User->role != 1) return false;
         }
+        
+        if($User->verifyPassword($password)){
+            if($User->passwordNeedsRehash()){
+                $User->setPassword($password);
+                $User->save();
+            }
 
-        if($User->getPassword() == md5($password . SALT)){
             $auth_key = $this->gen_auth_key();
             $_SESSION['AUTH_KEY'] = $auth_key;
-            $Session = new Session();
+            $Session = $this->createSessionModel();
             $Session->session_id = session_id();
             $Session->user_id = $User->id;
             $Session->auth_key = $auth_key;
@@ -165,7 +196,7 @@ class Authentication{
         $charactersLength = strlen($characters);
         $randomString = '';
         for ($i = 0; $i < $lenght; $i++) {
-            $randomString .= $characters[rand(0, $charactersLength - 1)];
+            $randomString .= $characters[random_int(0, $charactersLength - 1)];
         }
         return $randomString;
     }
@@ -183,7 +214,7 @@ class Authentication{
         $charactersLength = strlen($characters);
         $randomString = '';
         for ($i = 0; $i < $lenght; $i++) {
-            $randomString .= $characters[rand(0, $charactersLength - 1)];
+            $randomString .= $characters[random_int(0, $charactersLength - 1)];
         }
         return $randomString;
     }

@@ -150,7 +150,7 @@ class ModelTest extends TestCase
     {
         $model = new TestModel();
         $model->dropTable();
-        $this->assertFalse(Db::tableIsExists('test'));
+        $this->assertFalse(Db::tableIsExists('tests'));
     }
 
     public function testgetAll()
@@ -174,6 +174,9 @@ class ModelTest extends TestCase
 
         $result = TestModel::getAll();
         $this->assertCount(3, $result);
+
+        $filtered = TestModel::getAll(['name' => 'name2', 'value' => 'value2']);
+        $this->assertCount(1, $filtered);
 
         $model->dropTable();
         
