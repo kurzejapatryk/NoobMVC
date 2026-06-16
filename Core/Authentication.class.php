@@ -16,6 +16,24 @@ class Authentication{
     private $User;          //user object
 
     /**
+     * Factory method for creating user model.
+     * @return User
+     */
+    protected function createUserModel() : User
+    {
+        return new User();
+    }
+
+    /**
+     * Factory method for creating session model.
+     * @return Session
+     */
+    protected function createSessionModel() : Session
+    {
+        return new Session();
+    }
+
+    /**
      * Class constructor
      * Checks if the user is logged in
      * If yes, sets the user object
@@ -26,11 +44,13 @@ class Authentication{
     public function __construct(bool $renew = true)
     {
         if(isset($_SESSION['AUTH_KEY'])){
-            $Session = new Session();
+            $Session = $this->createSessionModel();
             $Session->getBySessionID(session_id());
             if($Session->auth_key == $_SESSION['AUTH_KEY']){
                 if ($Session->expire_datetime > time()) {
-                    $this->User = new User($Session->user_id);
+                    $this->User = $this->createUserModel();
+                    $this->User->id = (int)$Session->user_id;
+                    $this->User->get();
                     if($renew){
                         $Session->expire_datetime =  time() + SESSION_EXPIRED_TIME;
                         $Session->save();
@@ -43,10 +63,10 @@ class Authentication{
                 $this->restartSession();
             }else {
                 $this->active_user = false;
-                $this->User = new User();
+                $this->User = $this->createUserModel();
             }
         }else{
-            $this->User = new User();
+            $this->User = $this->createUserModel();
             $this->active_user = false;
         }
 
@@ -59,7 +79,7 @@ class Authentication{
     private function restartSession() : void
     {
         session_regenerate_id(true);
-        $this->User = new User();
+        $this->User = $this->createUserModel();
         $this->active_user = false;
     }
 
@@ -107,7 +127,7 @@ class Authentication{
      */
     public function logout() : void
     {
-        $Session = new Session();
+        $Session = $this->createSessionModel();
         $Session->getBySessionID(session_id());
         $Session->expire_datetime = 0;
         $Session->save();
@@ -123,7 +143,7 @@ class Authentication{
      */
     public function login(string $user_name, string $password, bool $admin = false) : bool
     {
-        $User = new User();
+        $User = $this->createUserModel();
         $User->getByUserName($user_name);
 
         if(empty($User->id)){
@@ -142,7 +162,7 @@ class Authentication{
 
             $auth_key = $this->gen_auth_key();
             $_SESSION['AUTH_KEY'] = $auth_key;
-            $Session = new Session();
+            $Session = $this->createSessionModel();
             $Session->session_id = session_id();
             $Session->user_id = $User->id;
             $Session->auth_key = $auth_key;
