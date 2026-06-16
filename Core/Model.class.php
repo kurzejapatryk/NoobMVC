@@ -16,6 +16,19 @@ class Model{
   protected static $schema;
 
   /**
+   * Validates SQL identifier names (table/column).
+   * @param string $identifier
+   * @return string
+   */
+  protected static function sanitizeIdentifier(string $identifier) : string
+  {
+    if(!preg_match('/^[A-Za-z_][A-Za-z0-9_]*$/', $identifier)){
+      throw new Exception('Invalid SQL identifier: ' . $identifier);
+    }
+    return $identifier;
+  }
+
+  /**
    * Object constructor
    * @param integer $id object identifier
    * @access public
@@ -109,7 +122,8 @@ class Model{
       $opr = 'add';
     }
     
-    $table = static::$table;
+    $table = self::sanitizeIdentifier(static::$table);
+    $allowedColumns = array_keys(static::$schema);
 
     unset($vars['id']);
     unset($vars['table']);
@@ -120,6 +134,9 @@ class Model{
       $first = true;
 
       foreach($vars as $key => $var){
+        if(!in_array($key, $allowedColumns, true)){
+          continue;
+        }
         if(!$first){
           $columns .= ", ";
         }else{
@@ -129,7 +146,12 @@ class Model{
         $values[] = $var;
       }
 
-      $SQL = "UPDATE ".$table." SET ".$columns." WHERE id = ".$id;
+      if(empty($values)){
+        return $this;
+      }
+
+      $values[] = $id;
+      $SQL = "UPDATE ".$table." SET ".$columns." WHERE id = ?";
       Db::update($SQL, $values);
 
     }elseif($opr == 'add'){
@@ -139,6 +161,9 @@ class Model{
       $itr = "";
 
       foreach($vars as $key => $var){
+        if(!in_array($key, $allowedColumns, true)){
+          continue;
+        }
         if(!$first){
           $columns .= ", ";
           $itr .= ", ";
@@ -149,6 +174,10 @@ class Model{
         $values[] = $var;
         $itr .= "?";
 
+      }
+
+      if(empty($values)){
+        return $this;
       }
 
       $SQL = "INSERT INTO ".$table." (".$columns.") VALUES (".$itr.")";
@@ -168,7 +197,7 @@ class Model{
   {
     $vars = get_object_vars($this);
     $id = $vars['id'];
-    $table = static::$table;
+    $table = self::sanitizeIdentifier(static::$table);
     unset($vars['table']);
     unset($vars['id']);
     Db::delete('DELETE FROM '.$table.' WHERE id = ?',array($id));
@@ -181,7 +210,7 @@ class Model{
    */
   public function get() : self
   {
-    $table = static::$table;
+    $table = self::sanitizeIdentifier(static::$table);
     if(!is_null($this->id)){
       $id = $this->id;
       $SQL = "SELECT * FROM ".$table." WHERE id = ? LIMIT 1";
@@ -203,7 +232,8 @@ class Model{
   public function find() : self|null
   {
     $vars = get_object_vars($this);
-    $table = static::$table;
+    $table = self::sanitizeIdentifier(static::$table);
+    $allowedColumns = array_keys(static::$schema);
 
     $columns = "";
     $where_vars = array();
@@ -215,6 +245,9 @@ class Model{
     
     foreach($vars as $key => $var){
       if($var != null){
+        if(!in_array($key, $allowedColumns, true)){
+          continue;
+        }
         if(!$first){
           $columns .= " AND ";
         }else{
@@ -249,7 +282,7 @@ class Model{
    */
   public static function getAll(array $where = array(), string $order = "id ASC") : array
   {
-    $table = static::$table;
+    $table = self::sanitizeIdentifier(static::$table);
     $className =  get_called_class();
     $schema = static::$schema;
     $allowedColumns = array_keys($schema);
@@ -321,16 +354,18 @@ class Model{
    */
   public static function createTable() : bool
   {
-    $SQL = "CREATE TABLE " . static::$table . " ( ";
+    $table = self::sanitizeIdentifier(static::$table);
+    $SQL = "CREATE TABLE " . $table . " ( ";
     $coma = false;
     foreach(static::$schema as $key => $val){
+      $column = self::sanitizeIdentifier($key);
       if($coma){
         $SQL .= ", ";
       }
       else {
         $coma = true;
       }
-      $SQL .= $key . " " . $val;
+      $SQL .= $column . " " . $val;
     }
     $SQL .= " )";
     $result = Db::create($SQL);
@@ -344,7 +379,8 @@ class Model{
    */
   public static function dropTable() : int|false
   {
-    $SQL = "DROP TABLE " . static::$table;
+    $table = self::sanitizeIdentifier(static::$table);
+    $SQL = "DROP TABLE " . $table;
     $result = Db::delete($SQL);
     return $result;
   }
