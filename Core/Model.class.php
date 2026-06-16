@@ -251,6 +251,8 @@ class Model{
   {
     $table = static::$table;
     $className =  get_called_class();
+    $schema = static::$schema;
+    $allowedColumns = array_keys($schema);
     $data = array();
     $SQL = "SELECT * FROM ".$table;
 
@@ -260,14 +262,33 @@ class Model{
         $i = 0;
 
         foreach($where as $column => $val){
+          if(!in_array($column, $allowedColumns, true)){
+            continue;
+          }
           if($i != 0) $where_SQL .= ' AND ';
           $where_SQL .= $column . " = ?";
           $data[] = $val;
+          $i++;
         }
-        $SQL .= $where_SQL;
+
+        if(!empty($data)){
+          $SQL .= $where_SQL;
+        }
       }
 
-      $SQL .= " ORDER BY ".$order;
+      $orderParts = preg_split('/\s+/', trim($order));
+      $orderColumn = $orderParts[0] ?? 'id';
+      $orderDirection = strtoupper($orderParts[1] ?? 'ASC');
+
+      if(!in_array($orderColumn, $allowedColumns, true)){
+        $orderColumn = 'id';
+      }
+
+      if($orderDirection !== 'DESC'){
+        $orderDirection = 'ASC';
+      }
+
+      $SQL .= " ORDER BY ".$orderColumn." ".$orderDirection;
       
       $resp = Db::select($SQL, $data);
 

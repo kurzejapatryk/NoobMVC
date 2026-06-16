@@ -68,10 +68,10 @@ class Session extends Model{
 
   /**
    * Get session by ID
-   * @param int $id
+  * @param string $id
    * @return self
    */
-  public function getBySessionID(int $id) : Session
+  public function getBySessionID(string $id) : Session
   {
     $table = self::$table;
     if($id){

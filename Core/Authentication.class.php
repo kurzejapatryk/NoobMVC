@@ -70,13 +70,8 @@ class Authentication{
      */
     private function gen_auth_key(int $length = 128) : string
     {
-        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $charactersLength = strlen($characters);
-        $randomString = '';
-        for ($i = 0; $i < $length; $i++) {
-            $randomString .= $characters[rand(0, $charactersLength - 1)];
-        }
-        return $randomString.md5(time());
+        $byteLength = (int) ceil($length / 2);
+        return substr(bin2hex(random_bytes($byteLength)), 0, $length);
     }
 
     /**
@@ -131,11 +126,20 @@ class Authentication{
         $User = new User();
         $User->getByUserName($user_name);
 
+        if(empty($User->id)){
+            return false;
+        }
+
         if($admin){
             if($User->role != 1) return false;
         }
         
-        if($User->getPassword() == md5($password . SALT)){
+        if($User->verifyPassword($password)){
+            if($User->passwordNeedsRehash()){
+                $User->setPassword($password);
+                $User->save();
+            }
+
             $auth_key = $this->gen_auth_key();
             $_SESSION['AUTH_KEY'] = $auth_key;
             $Session = new Session();
@@ -165,7 +169,7 @@ class Authentication{
         $charactersLength = strlen($characters);
         $randomString = '';
         for ($i = 0; $i < $lenght; $i++) {
-            $randomString .= $characters[rand(0, $charactersLength - 1)];
+            $randomString .= $characters[random_int(0, $charactersLength - 1)];
         }
         return $randomString;
     }
@@ -183,7 +187,7 @@ class Authentication{
         $charactersLength = strlen($characters);
         $randomString = '';
         for ($i = 0; $i < $lenght; $i++) {
-            $randomString .= $characters[rand(0, $charactersLength - 1)];
+            $randomString .= $characters[random_int(0, $charactersLength - 1)];
         }
         return $randomString;
     }

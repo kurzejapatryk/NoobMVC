@@ -149,7 +149,47 @@ class User extends Model{
    */
   public function setPassword(string $password) : void
   {
-    $this->password = md5($password.SALT);
+    $this->password = password_hash($password, PASSWORD_DEFAULT);
+  }
+
+  /**
+   * Verify user password with support for legacy hashes.
+   * @param string $password
+   * @return bool
+   * @access public
+   */
+  public function verifyPassword(string $password) : bool
+  {
+    if(empty($this->password)){
+      return false;
+    }
+
+    $hashInfo = password_get_info($this->password);
+    if(!empty($hashInfo['algo'])){
+      return password_verify($password, $this->password);
+    }
+
+    // Backward compatibility for legacy md5+salt hashes.
+    return hash_equals($this->password, md5($password . SALT));
+  }
+
+  /**
+   * Check if stored password should be upgraded.
+   * @return bool
+   * @access public
+   */
+  public function passwordNeedsRehash() : bool
+  {
+    if(empty($this->password)){
+      return false;
+    }
+
+    $hashInfo = password_get_info($this->password);
+    if(empty($hashInfo['algo'])){
+      return true;
+    }
+
+    return password_needs_rehash($this->password, PASSWORD_DEFAULT);
   }
 
   /**
