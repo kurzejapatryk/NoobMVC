@@ -78,7 +78,14 @@ class Authentication{
      */
     private function restartSession() : void
     {
-        session_regenerate_id(true);
+        if(session_status() !== PHP_SESSION_ACTIVE){
+            @session_start();
+        }
+
+        if(session_status() === PHP_SESSION_ACTIVE){
+            session_regenerate_id(true);
+        }
+
         $this->User = $this->createUserModel();
         $this->active_user = false;
     }

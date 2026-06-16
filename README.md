@@ -53,6 +53,15 @@ docker exec apache-noobMVC php noob.php -ipassword123
 ```
 **Replace password123 with your desired password for the admin user. The password must be at least 8 characters long.**
 
+### Running PHPUnit in Docker
+If you do not have PHP and Composer installed locally, you can run tests directly in Docker:
+
+```bash
+./scripts/phpunit-docker.sh
+```
+
+The script starts MySQL, initializes tables using the CLI init command, and then runs PHPUnit.
+
 ### Managing Existing Tables
 If you need to remove existing tables, you can use PHPMyAdmin:
 Access PHPMyAdmin at [http://localhost:8080/](http://localhost:8080/).
